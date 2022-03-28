@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mx.edu.utez.neighborhoodcommitte.entity.City;
 import mx.edu.utez.neighborhoodcommitte.service.CityService;
+import mx.edu.utez.neighborhoodcommitte.service.StateService;
 
 @Controller
 @RequestMapping(value ="/city")
@@ -21,10 +22,14 @@ public class CityController {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private StateService stateService;
+
     @GetMapping(value = "/list")
     public String findAll(Model model) {
         model.addAttribute("listCities", cityService.findAll());
-        return "";
+        model.addAttribute("listStates", stateService.findAll());
+        return "city/listCities";
     }
 
     @GetMapping(value = "/find/{id}")
@@ -38,27 +43,46 @@ public class CityController {
         return "";
     }
 
+    @GetMapping("/create")
+	public String crearMascota(City city, Model modelo) {
+        System.out.println("Llega al metodo");
+		modelo.addAttribute("listStates", stateService.findAll());
+		return "city/createCity";
+	}
+
     @PostMapping(value = "/save")
     public String save(Model model, City city, RedirectAttributes redirectAttributes) {
+        String msgOk = "";
+        String msgError = "";
+
+        if(city.getId() != null){
+            msgOk = "Ciudad Actualizada correctamente";
+            msgError = "La ciudad NO pudo ser Actualizada correctamente";
+        }else{
+            msgOk = "Ciudad Guardada correctamente";
+            msgError = "La ciudad NO pudo ser Guardada correctamente";
+        }
+
         boolean res = cityService.save(city);
+        System.out.println("ID: "+ city.getId());
         if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", "Ciudad guardada correctamente");
-            return "";
+            redirectAttributes.addFlashAttribute("msg_success", msgOk);
+            return "redirect:/city/list";
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", "No se pudo guardar la ciudad");
-            return "";
+            redirectAttributes.addFlashAttribute("msg_error", msgError);
+            return "redirect:/city/create";
         }
     }
 
-    @PutMapping(value = "/update")
-    public String update(Model model, City city, RedirectAttributes redirectAttributes) {
-        boolean res = cityService.save(city);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", "Ciudad actualizada correctamente");
-            return "";
-        } else {
-            redirectAttributes.addFlashAttribute("msg_error", "No se pudo actualizar la ciudad");
-            return "";
+    @GetMapping(value = "/update/{id}")
+    public String update(@PathVariable long id, Model modelo, RedirectAttributes redirectAttributes) {
+        City city = cityService.findOne(id);
+        if (city != null) {
+            modelo.addAttribute("city", city);
+            modelo.addAttribute("listStates", stateService.findAll());
+            return "city/createCity";
+        }else{
+            return "city/listCities";
         }
     }
 

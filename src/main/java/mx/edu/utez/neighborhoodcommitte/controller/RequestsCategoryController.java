@@ -24,7 +24,7 @@ public class RequestsCategoryController {
     @GetMapping(value = "/list")
     public String findAll(Model model) {
         model.addAttribute("listRequestsCategory", requestCategoryService.findAll());
-        return "";
+        return "requestsCategory/listRequests";
     }
 
     @GetMapping(value = "/find/{id}")
@@ -39,27 +39,42 @@ public class RequestsCategoryController {
         }
     }
 
+    @GetMapping("/create")
+	public String crearMascota(RequestsCategory request, Model modelo) {
+		return "requestsCategory/createRequests";
+	}
+
     @PostMapping(value = "/save")
-    public String save(Model model, RequestsCategory requestsCategory, RedirectAttributes redirectAttributes) {
-        boolean res = requestCategoryService.save(requestsCategory);
+    public String save(Model model, RequestsCategory requests, RedirectAttributes redirectAttributes) {
+        String msgOk = "";
+        String msgError = "";
+
+        if(requests.getId() != null){
+            msgOk = "Servicio Publico Actualizado correctamente";
+            msgError = "El Servicio Publico NO pudo ser Actualizada correctamente";
+        }else{
+            msgOk = "Servicio Publico Guardado correctamente";
+            msgError = "El Servicio Publico NO pudo ser Guardado correctamente";
+        }
+
+        boolean res = requestCategoryService.save(requests);
         if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", "Categoría guardada correctamente");
-            return "";
+            redirectAttributes.addFlashAttribute("msg_success", msgOk);
+            return "redirect:/requestsCategory/list";
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", "No se pudo guardar la categoría");
-            return "";
+            redirectAttributes.addFlashAttribute("msg_error", msgError);
+            return "redirect:/requestsCategory/create";
         }
     }
 
-    @PutMapping(value = "/update")
-    public String update(Model model, RequestsCategory requestsCategory, RedirectAttributes redirectAttributes) {
-        boolean res = requestCategoryService.save(requestsCategory);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", "Categoría actualizada correctamente");
-            return "";
-        } else {
-            redirectAttributes.addFlashAttribute("msg_error", "No se pudo actualizar la categoría");
-            return "";
+    @GetMapping(value = "/update/{id}")
+    public String update(@PathVariable long id, Model modelo, RedirectAttributes redirectAttributes) {
+        RequestsCategory request = requestCategoryService.findOne(id);
+        if (request != null) {
+            modelo.addAttribute("requestsCategory", request);
+            return "requestsCategory/createRequests";
+        }else{
+            return "requestsCategory/listRequests";
         }
     }
 
