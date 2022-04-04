@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Municipios</title>
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+    <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"> -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+    />
+
+    <style>
+        li {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{fragments/header :: header-admin}"></div>
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">REGISTRAR</div>
+        <div class="card-body">
+            <div
+                    class="col d-flex justify-content-between bg-white border-bottom mb-2"
+            >
+                <h5 class="card-title">NUEVA COLONIA</h5>
+            </div>
+            <form th:action="@{/suburb/save}" th:object="${suburb}" method="POST">
+                <div class="modal-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Municipio</label>
+                            <select
+                                    class="form-control form-control-lg"
+                                    th:field="*{city.id}"
+                            >
+                                <option
+                                        th:each="city: ${listCities}"
+                                        th:value="${city.id}"
+                                        th:text="${city.name}"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="form-group col">
+                            <label>Colonia</label>
+                            <input
+                                    class="form-control form-control-lg"
+                                    type="text"
+                                    th:field="*{name}"
+                                    placeholder="Nombre de la colonia"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row float-right">
+                        <div class="col-lg-12 float-right">
+                            <a th:href="@{/suburb/list}" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Cancelar</span>
+                            </a>
+                            <button class="btn btn-primary" type="submit">
+                                <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Guardar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- <script th:src="@{/js/bootstrap.min.js}"></script> -->
+<!--Ionicons-->
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+
+<script th:src="@{/js/toast.min.js}"></script>
+
+<script th:if="${msg_success != null}">
+    new Toast({
+        message: "[[${msg_success}]]",
+        type: "success",
+    });
+</script>
+<script th:if="${msg_error != null}">
+    new Toast({
+        message: "[[${msg_error}]]",
+        type: "danger",
+    });
+</script>
+</body>
+</html>

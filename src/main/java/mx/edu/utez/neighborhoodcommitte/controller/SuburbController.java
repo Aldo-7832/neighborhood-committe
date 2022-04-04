@@ -1,5 +1,6 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
+import mx.edu.utez.neighborhoodcommitte.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,14 +18,18 @@ import mx.edu.utez.neighborhoodcommitte.service.SuburbService;
 @Controller
 @RequestMapping(value = "/suburb")
 public class SuburbController {
-    
+
+    @Autowired
+    private CityService cityService;
+
     @Autowired
     private SuburbService suburbService;
 
     @GetMapping(value = "/list")
     public String findAll(Model model) {
+        model.addAttribute("listCities", cityService.findAll());
         model.addAttribute("listSuburbs", suburbService.findAll());
-        return "";
+        return "suburb/listSuburb";
     }
 
     @GetMapping(value = "/find/{id}")
@@ -32,22 +37,34 @@ public class SuburbController {
         Suburb suburb = suburbService.findOne(id);
         if (!suburb.equals(null)) {
             model.addAttribute("suburb", suburb);
-            return "";
+
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "No se encontró el asentamiento solicitado");
-            return "";
+
         }
+        return "";
     }
 
     @PostMapping(value = "/save")
     public String save(Model model, Suburb suburb, RedirectAttributes redirectAttributes) {
+        String msgOk = "";
+        String msgError = "";
+
+        if(suburb.getId() != null){
+            msgOk = "Colonia Actualizada correctamente";
+            msgError = "La colonia NO pudo ser Actualizada correctamente";
+        }else{
+            msgOk = "Colonia Guardada correctamente";
+            msgError = "La colonia NO pudo ser Guardada correctamente";
+        }
+
         boolean res = suburbService.save(suburb);
         if (res) {
             redirectAttributes.addFlashAttribute("msg_success", "Asentamiento guardado correctamente");
-            return "";
+            return "redirect:/suburb/listSuburb";
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "No se pudo guardar el asentamiento");
-            return "";
+            return "redirect:/suburb/createSuburb";
         }
     }
 
