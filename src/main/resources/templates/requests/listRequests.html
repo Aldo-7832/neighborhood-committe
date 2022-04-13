@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -79,16 +80,14 @@
                                 </div>
                             </td>
                             <td th:text="${tmpRequest.payment_count}"></td>
-                            <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                                Launch demo modal
-                            </button></td>
 
-                            <!--<td>
+
+                            <td>
                                 <div class="text-end">
                                     <a th:href="@{/committeeRequest/detalles/{id} (id=${tmpRequest.id})}" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#detailsPayment">
                                         <ion-icon name="book"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Detalles</span>
                                     </a>
-                                </div> -->
+                                </div>
 
                             </td>
 
