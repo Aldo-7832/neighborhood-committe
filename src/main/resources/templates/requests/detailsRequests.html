@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Detalles</title>
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+    />
+</head>
+
+<body>
+    <div class="container ">
+        <div class="row justify-content-center">
+            <div class="col-5">
+                    <div style="background-color: rgba(252,0,0, 0.1)" >
+                            <div class="col-9 ">
+                                <div class="container ">
+                                    <img src="https://grupohidraulico.com.mx/wp-content/uploads/2019/04/drenaje.jpg"
+                                         class="img-fluid rounded  " alt="..." >
+                                </div><br>
+                                <div class="col-12"  th:each="tmpRequest : ${committeeRequests}">
+                                    <h2 class="mb-3">Detalles</h2>
+
+                                    <strong>
+                                        Categoria:
+                                        <small th:text="${tmpRequest.requestsCategory.name}" class="text-muted"></small>
+                                    </strong><br><br>
+
+                                    <strong>
+                                        Comentario:
+                                        <small th:text="${tmpRequest.commentary}" class="text-muted"></small>
+                                    </strong><br><br>
+
+                                    <strong>
+                                        Estado:
+                                        <small th:switch="${tmpRequest.status}" class="text-muted badge badge-pill ">
+                                                <div th:case="'1'">
+                                                    <small class="text-muted"><span
+                                                            class="badge badge-pill badge-danger">Cancelada</span></small>
+                                                </div>
+                                                <div th:case="'2'">
+                                                    <small class="text-muted"><span
+                                                            class="badge badge-pill badge-success">Canalizada</span></small>
+                                                </div>
+                                                <div th:case="'3'">
+                                                    <small class="text-muted"><span
+                                                            class="badge badge-pill badge-primary">Atendida</span></small>
+                                                </div>
+                                        </small>
+                                    </strong><br><br>
+                                    <strong>
+                                        Estado del pago:
+                                        <small th:switch="${tmpRequest.payment_status}" class="text-muted badge badge-pill ">
+                                            <div th:case="'1'">
+                                                <small class="text-muted"><span
+                                                        class="badge badge-pill badge-danger">Por cobrar</span></small>
+                                            </div>
+                                            <div th:case="'2'">
+                                                <small class="text-muted"><span
+                                                        class="badge badge-pill badge-primary">Pago realizado</span></small>
+                                            </div>
+                                        </small>
+                                    </strong><br><br>
+
+                                    <strong>
+                                        <div class="form-group col">
+                                            <label>Cantidad de pago</label>
+                                            <input
+                                                    class="form-control form-control-lg"
+                                                    type="text"
+                                                    th:text="*{tmpRequest.payment_count}"
+                                                    placeholder="cantidad"
+                                            /><br>
+                                            <button  th:href="@{/committeeRequest/list}" class="btn btn-primary" type="submit">
+                                                <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Guardar</span>
+                                            </button>
+
+                                        </div>
+                                    </strong>
+                                        <br><br>
+                                    <br><br>
+
+
+                                </div>
+                            </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <script
+            type="module"
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+            nomodule
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+
+    <script th:src="@{/js/toast.min.js}"></script>
+
+    <script th:if="${msg_success != null}">
+        new Toast({
+            message: "[[${msg_success}]]",
+            type: "success",
+        });
+    </script>
+    <script th:if="${msg_error != null}">
+        new Toast({
+            message: "[[${msg_error}]]",
+            type: "danger",
+        });
+    </script>
+</body>
+</html>
