@@ -10,26 +10,23 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "suburb")
-public class Suburb implements Serializable{
-
+public class Suburb implements Serializable {
+    
     @Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name="name", nullable = false, length = 50)
-    @NotBlank(message="El nombre no puede estar vacio")
-	private String name;
+    @Column(name = "name", nullable = false, length = 150)
+    private String name;
 
-    @Column(name="postal_code", nullable = false, length = 15)
-    @NotBlank(message="El código postal no puede estar vacio")
-	private String postalCode;
+    @Column(name ="postal_code", nullable = false, length = 5, unique = true)
+    private String postalCode;
 
     @ManyToOne
-	@JoinColumn(name = "city", nullable = false)
+    @JoinColumn(name = "city", nullable = false)
     private City city;
 
     public Long getId() {
@@ -64,5 +61,4 @@ public class Suburb implements Serializable{
         this.city = city;
     }
 
-    
 }

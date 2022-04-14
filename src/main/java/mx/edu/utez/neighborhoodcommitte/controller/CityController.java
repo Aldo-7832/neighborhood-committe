@@ -1,93 +1,73 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mx.edu.utez.neighborhoodcommitte.entity.City;
 import mx.edu.utez.neighborhoodcommitte.service.CityService;
-import mx.edu.utez.neighborhoodcommitte.service.StateService;
 
 @Controller
-@RequestMapping(value ="/city")
+@Transactional
 public class CityController {
-    
+
     @Autowired
     private CityService cityService;
 
-    @Autowired
-    private StateService stateService;
-
-    @GetMapping(value = "/list")
+    @GetMapping(name = "/city/list")
     public String findAll(Model model) {
-        model.addAttribute("listCities", cityService.findAll());
-        model.addAttribute("listStates", stateService.findAll());
-        return "city/listCities";
+        model.addAttribute("cityList", cityService.findAll());
+        return "";
     }
 
-    @GetMapping(value = "/find/{id}")
+    @GetMapping(value = "/city/find/{id}")
     public String findOne(Model model, @PathVariable("id") long id, RedirectAttributes redirectAttributes) {
-        City city = cityService.findOne(id);
+        City city = cityService.findById(id);
         if (!city.equals(null)) {
-            model.addAttribute("city", city);
-        } else{
-            redirectAttributes.addFlashAttribute("msg_error", "No se encontró la ciudad solicitada");
+            model.addAttribute("category", city);
+        } else {
+            redirectAttributes.addFlashAttribute("msg_error", "No se encontró la categoría solicitada");
         }
         return "";
     }
 
-    @GetMapping("/create")
-	public String crearMascota(City city, Model modelo) {
-        System.out.println("Llega al metodo");
-		modelo.addAttribute("listStates", stateService.findAll());
-		return "city/createCity";
-	}
+    @GetMapping(value = "/city/create")
+    public String create(Model model, City city) {
+        return "";
+    }
 
-    @PostMapping(value = "/save")
+    @PostMapping(value = "/city/save")
     public String save(Model model, City city, RedirectAttributes redirectAttributes) {
         String msgOk = "";
         String msgError = "";
 
-        if(city.getId() != null){
-            msgOk = "Ciudad Actualizada correctamente";
-            msgError = "La ciudad NO pudo ser Actualizada correctamente";
-        }else{
-            msgOk = "Ciudad Guardada correctamente";
-            msgError = "La ciudad NO pudo ser Guardada correctamente";
+        if (city.getId() != null) {
+            msgOk = "Ciudad actualizada correctamente";
+            msgError = "No se encontró la ciudad solicitada";
+        } else {
+            msgOk = "Ciudad guardada correctamente";
+            msgError = "No se pudo guardar la ciudad";
         }
 
         boolean res = cityService.save(city);
-        System.out.println("ID: "+ city.getId());
         if (res) {
             redirectAttributes.addFlashAttribute("msg_success", msgOk);
-            return "redirect:/city/list";
+            return "";
         } else {
             redirectAttributes.addFlashAttribute("msg_error", msgError);
-            return "redirect:/city/create";
+            return "";
         }
     }
 
-    @GetMapping(value = "/update/{id}")
-    public String update(@PathVariable long id, Model modelo, RedirectAttributes redirectAttributes) {
-        City city = cityService.findOne(id);
-        if (city != null) {
-            modelo.addAttribute("city", city);
-            modelo.addAttribute("listStates", stateService.findAll());
-            return "city/createCity";
-        }else{
-            return "city/listCities";
-        }
-    }
-
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/city/delete/{id}")
     public String delete(Model model, @PathVariable("id") long id) {
-        City city = cityService.findOne(id);
+        City city = cityService.findById(id);
         if (!city.equals(null)) {
             boolean res = cityService.delete(id);
             if (res) {
@@ -102,5 +82,5 @@ public class CityController {
             return "";
         }
     }
-
+    
 }

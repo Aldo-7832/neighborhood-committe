@@ -8,18 +8,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "requests_category")
-public class RequestsCategory implements Serializable{
-    @Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+@Table(name = "category")
+public class Category implements Serializable {
 
-    @Column(name="name", nullable = false, length = 120)
-    @NotBlank(message="El nombre no puede estar vacio")
-	private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "name", nullable = false, length = 150)
+    private String name;
 
     public Long getId() {
         return id;
@@ -36,6 +35,5 @@ public class RequestsCategory implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
-
     
 }

@@ -6,39 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.edu.utez.neighborhoodcommitte.entity.City;
-import mx.edu.utez.neighborhoodcommitte.repository.CityRepository;
+import mx.edu.utez.neighborhoodcommitte.repository.ICityRepository;
 
 @Service
 public class CityService {
 
     @Autowired
-    private CityRepository cityRepository;
+    private ICityRepository cityRepository;
 
     public List<City> findAll() {
         return cityRepository.findAll();
     }
 
-    public City findOne(long id) {
-        return cityRepository.getById(id);
+    public City findById(long id) {
+        return cityRepository.findById(id);
     }
 
     public boolean save(City obj) {
-        try {
-            cityRepository.save(obj);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        boolean flag = false;
+        City tmp = cityRepository.save(obj);
+        if (!tmp.equals(null)) {
+            flag = true;
         }
+        return flag;
     }
 
     public boolean delete(long id) {
-        City tmp = cityRepository.getById(id);
+        boolean flag = false;
+        City tmp = cityRepository.findById(id);
         if (!tmp.equals(null)) {
             cityRepository.delete(tmp);
-            return true;
+            flag = true;
         }
-        return false;
+        return flag;
     }
     
 }

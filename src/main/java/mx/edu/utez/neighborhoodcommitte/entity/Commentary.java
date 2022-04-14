@@ -12,19 +12,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "committee")
-public class Committee implements Serializable {
-
+@Table(name = "commentary")
+public class Commentary implements Serializable {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "suburb", nullable = false)
-    private Suburb suburb;
+    @Column(name = "content", nullable = false, length = 255)
+    private String content;
 
-    @Column(name = "status", nullable = false)
-    private int status;
+    @OneToOne
+    @JoinColumn(name = "request", nullable = false)
+    private Request request;
 
     public Long getId() {
         return id;
@@ -34,20 +34,20 @@ public class Committee implements Serializable {
         this.id = id;
     }
 
-    public Suburb getSuburb() {
-        return suburb;
+    public String getContent() {
+        return content;
     }
 
-    public void setSuburb(Suburb suburb) {
-        this.suburb = suburb;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public int getStatus() {
-        return status;
+    public Request getRequest() {
+        return request;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setRequest(Request request) {
+        this.request = request;
     }
-    
+
 }

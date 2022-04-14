@@ -10,14 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "role")
-public class Role implements Serializable{
-    @Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+@Table(name = "roles")
+public class Roles implements Serializable {
 
-    @Column(name="name", nullable = false, length = 45)
-	private String name;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "authority", nullable = false, length = 150)
+    private String authority;
 
     public Long getId() {
         return id;
@@ -27,13 +28,12 @@ public class Role implements Serializable{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getAuthority() {
+        return authority;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
-
     
 }
