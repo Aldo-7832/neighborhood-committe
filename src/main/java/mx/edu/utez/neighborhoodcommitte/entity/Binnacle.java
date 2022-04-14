@@ -33,8 +33,8 @@ public class Binnacle implements Serializable {
     private String affectedTable;
 
     @ManyToOne
-    @JoinColumn(name = "user", nullable = false)
-    private Users user;
+    @JoinColumn(name = "responsible", nullable = false)
+    private Users responsible;
 
     public Long getId() {
         return id;
