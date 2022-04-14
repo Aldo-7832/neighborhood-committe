@@ -68,12 +68,12 @@ public class Binnacle implements Serializable {
         this.affectedTable = affectedTable;
     }
 
-    public Users getUser() {
-        return user;
+    public Users getResponsible() {
+        return responsible;
     }
 
-    public void setUser(Users user) {
-        this.user = user;
+    public void setResponsible(Users responsible) {
+        this.responsible = responsible;
     }
 
 }
