@@ -18,27 +18,27 @@ public class CityService {
         return cityRepository.findAll();
     }
 
-    public City findById(long id) {
-        return cityRepository.findById(id);
+    public City findOne(long id) {
+        return cityRepository.getById(id);
     }
 
     public boolean save(City obj) {
-        boolean flag = false;
-        City tmp = cityRepository.save(obj);
-        if (!tmp.equals(null)) {
-            flag = true;
+        try {
+            cityRepository.save(obj);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return flag;
     }
 
     public boolean delete(long id) {
-        boolean flag = false;
-        City tmp = cityRepository.findById(id);
+        City tmp = cityRepository.getById(id);
         if (!tmp.equals(null)) {
             cityRepository.delete(tmp);
-            flag = true;
+            return true;
         }
-        return flag;
+        return false;
     }
     
 }

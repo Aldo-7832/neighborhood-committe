@@ -36,7 +36,7 @@
           >
             <h5 class="card-title">NUEVO SERVICIO PUBLICO</h5>
           </div>
-          <form th:action="@{/requestsCategory/save}" th:object="${requestsCategory}" method="POST">
+          <form th:action="@{/category/save}" th:object="${category}" method="POST">
             <div class="modal-body">
               <input type="hidden" th:field="*{id}"/>
               <div class="form-row">
@@ -49,12 +49,13 @@
                     placeholder="Nombre del Servicio Publico"
                   />
                 </div>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mb-3 mt-3"></div>
               </div>
             </div>
             <div class="card-footer">
               <div class="row float-right">
                 <div class="col-lg-12 float-right">
-                  <a th:href="@{/requestsCategory/list}" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <a th:href="@{/category/list}" class="btn btn-secondary" data-bs-dismiss="modal">
                     <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Cancelar</span>
                   </a>
                   <button class="btn btn-primary" type="submit">

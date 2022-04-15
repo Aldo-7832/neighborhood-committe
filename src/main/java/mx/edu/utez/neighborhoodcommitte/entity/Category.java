@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "category")
@@ -18,6 +20,9 @@ public class Category implements Serializable {
     private Long id;
 
     @Column(name = "name", nullable = false, length = 150)
+    @NotBlank(message="El nombre no puede estar vacio")
+    @Size(min = 2, message="El mensaje debe ser minimo de 2 caracteres")
+    @Size(max = 150, message="El mensaje debe ser maximo de 50 caracteres")
     private String name;
 
     public Long getId() {

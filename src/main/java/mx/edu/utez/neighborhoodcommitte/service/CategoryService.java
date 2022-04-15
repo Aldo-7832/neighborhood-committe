@@ -18,27 +18,27 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category findById(long id) {
-        return categoryRepository.findById(id);
+    public Category findOne(long id) {
+        return categoryRepository.getById(id);
     }
 
     public boolean save(Category obj) {
-        boolean flag = false;
-        Category tmp = categoryRepository.save(obj);
-        if (!tmp.equals(null)) {
-            flag = true;
+        try {
+            categoryRepository.save(obj);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return flag;
     }
 
     public boolean delete(long id) {
-        boolean flag = false;
-        Category tmp = categoryRepository.findById(id);
+        Category tmp = categoryRepository.getById(id);
         if (!tmp.equals(null)) {
             categoryRepository.delete(tmp);
-            flag = true;
+            return true;
         }
-        return flag;
+        return false;
     }
     
 }

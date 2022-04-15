@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,71 +17,82 @@ import mx.edu.utez.neighborhoodcommitte.service.CategoryService;
 
 @Controller
 @RequestMapping("/category")
-@Transactional
 public class CategoryController {
 
     @Autowired
-    private CategoryService categoryService;
+    private CategoryService requestCategoryService;
 
-    @GetMapping(name = "/list")
+    @GetMapping(value = "/list")
     public String findAll(Model model) {
-        model.addAttribute("categoryList", categoryService.findAll());
-        return "";
+        model.addAttribute("listRequestsCategory", requestCategoryService.findAll());
+        return "category/listCategory";
     }
 
     @GetMapping(value = "/find/{id}")
     public String findOne(Model model, @PathVariable("id") long id, RedirectAttributes redirectAttributes) {
-        Category category = categoryService.findById(id);
-        if (!category.equals(null)) {
-            model.addAttribute("category", category);
+        Category requestCategory = requestCategoryService.findOne(id);
+        if (!requestCategory.equals(null)) {
+            model.addAttribute("requestCategory", requestCategory);
+            return "";
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "No se encontró la categoría solicitada");
+            return "";
         }
-        return "";
     }
 
-    @GetMapping(value = "/create")
-    public String create(Model model, Category category) {
-        return "";
-    }
+    @GetMapping("/create")
+	public String crearMascota(Category request, Model modelo) {
+		return "category/createCategory";
+	}
 
     @PostMapping(value = "/save")
     public String save(Model model, Category category, RedirectAttributes redirectAttributes) {
         String msgOk = "";
         String msgError = "";
 
-        if (category.getId() != null) {
-            msgOk = "Categoría actualizada correctamente";
-            msgError = "No se encontró la categoría solicitada";
-        } else {
-            msgOk = "Categoría guardada correctamente";
-            msgError = "No se pudo guardar la categoría";
+        if(category.getId() != null){
+            msgOk = "Servicio Publico Actualizado correctamente";
+            msgError = "El Servicio Publico NO pudo ser Actualizada correctamente";
+        }else{
+            msgOk = "Servicio Publico Guardado correctamente";
+            msgError = "El Servicio Publico NO pudo ser Guardado correctamente";
         }
 
-        boolean res = categoryService.save(category);
+        boolean res = requestCategoryService.save(category);
         if (res) {
             redirectAttributes.addFlashAttribute("msg_success", msgOk);
-            return "";
+            return "redirect:/category/list";
         } else {
             redirectAttributes.addFlashAttribute("msg_error", msgError);
-            return "";
+            return "redirect:/category/create";
         }
     }
 
-    @GetMapping(value = "/delete/{id}")
-    public String delete(Model model, @PathVariable("id") long id) {
-        Category category = categoryService.findById(id);
-        if (!category.equals(null)) {
-            boolean res = categoryService.delete(id);
+    @GetMapping(value = "/update/{id}")
+    public String update(@PathVariable long id, Model modelo, RedirectAttributes redirectAttributes) {
+        Category request = requestCategoryService.findOne(id);
+        if (request != null) {
+            modelo.addAttribute("requestsCategory", request);
+            return "category/createRequests";
+        }else{
+            return "category/listRequests";
+        }
+    }
+
+    @DeleteMapping(value = "/delete/{id}")
+    public String delete(Model model, @PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+        Category requestCategory = requestCategoryService.findOne(id);
+        if (!requestCategory.equals(null)) {
+            boolean res = requestCategoryService.delete(id);
             if (res) {
-                model.addAttribute("msg_success", "Categoría eliminada correctamente");
+                redirectAttributes.addFlashAttribute("msg_success", "Categoría eliminada correctamente");
                 return "";
             } else {
-                model.addAttribute("msg_error", "No se pudo eliminar la categoría");
+                redirectAttributes.addFlashAttribute("msg_error", "No se pudo eliminar la categoría");
                 return "";
             }
         } else {
-            model.addAttribute("msg_error", "No se encontró la categoría solicitada");
+            redirectAttributes.addFlashAttribute("msg_error", "No se encontró la categoría solicitada");
             return "";
         }
     }
