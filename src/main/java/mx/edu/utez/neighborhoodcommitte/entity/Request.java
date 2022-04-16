@@ -33,6 +33,9 @@ public class Request implements Serializable {
     @JoinColumn(name = "user", nullable = false)
     private Users user;
 
+    @Column(name="status", nullable = false)
+    private Integer status;
+
     @Column(name = "start_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
@@ -40,8 +43,16 @@ public class Request implements Serializable {
     @Column(name = "payment_status", nullable = false)
     private int paymentStatus;
 
-    @Column(name = "payment_amount", nullable = false)
+    @Column(name = "payment_amount")
     private double paymentAmount;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
