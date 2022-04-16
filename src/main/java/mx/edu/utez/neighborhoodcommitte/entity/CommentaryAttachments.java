@@ -12,22 +12,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "suburb")
-public class Suburb implements Serializable {
+@Table(name = "commentary_attachments")
+public class CommentaryAttachments implements Serializable {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false, length = 150)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @Column(name ="postal_code", nullable = false, length = 5, unique = true)
-    private String postalCode;
-
     @ManyToOne
-    @JoinColumn(name = "city", nullable = false)
-    private City city;
+    @JoinColumn(name = "commentary", nullable = false)
+    private Commentary commentary;
 
     public Long getId() {
         return id;
@@ -45,20 +42,12 @@ public class Suburb implements Serializable {
         this.name = name;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    public Commentary getCommentary() {
+        return commentary;
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
+    public void setCommentary(Commentary commentary) {
+        this.commentary = commentary;
     }
 
 }

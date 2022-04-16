@@ -7,21 +7,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "state")
-public class State implements Serializable {
-    
+@Table(name = "request_attachments")
+public class RequestAttachments implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "request", nullable = false)
+    private Request request;
 
-    @Column(name = "name", nullable = false, length = 150)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
-
-    @Column(name = "status", nullable = false)
-    private int status;
 
     public Long getId() {
         return id;
@@ -31,6 +34,14 @@ public class State implements Serializable {
         this.id = id;
     }
 
+    public Request getRequest() {
+        return request;
+    }
+
+    public void setRequest(Request request) {
+        this.request = request;
+    }
+
     public String getName() {
         return name;
     }
@@ -38,13 +49,5 @@ public class State implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }   
 
 }

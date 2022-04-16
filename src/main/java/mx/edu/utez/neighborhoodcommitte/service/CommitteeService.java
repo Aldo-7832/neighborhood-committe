@@ -6,39 +6,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Committee;
-import mx.edu.utez.neighborhoodcommitte.repository.CommitteeRepository;
+import mx.edu.utez.neighborhoodcommitte.repository.ICommitteeRepository;
 
 @Service
 public class CommitteeService {
-    
+
     @Autowired
-    private CommitteeRepository committeeRepository;
+    private ICommitteeRepository committeeRepository;
 
     public List<Committee> findAll() {
         return committeeRepository.findAll();
     }
 
-    public Committee findOne(long id) {
-        return committeeRepository.getById(id);
+    public Committee findById(long id) {
+        return committeeRepository.findById(id);
     }
 
     public boolean save(Committee obj) {
-        try {
-            committeeRepository.save(obj);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+        boolean flag = false;
+        Committee tmp = committeeRepository.save(obj);
+        if (!tmp.equals(null)) {
+            flag = true;
         }
+        return flag;
     }
 
     public boolean delete(long id) {
-        Committee tmp = committeeRepository.getById(id);
+        boolean flag = false;
+        Committee tmp = committeeRepository.findById(id);
         if (!tmp.equals(null)) {
             committeeRepository.delete(tmp);
-            return true;
+            flag = true;
         }
-        return false;
+        return flag;
     }
-
+    
 }

@@ -34,42 +34,28 @@
           <div
             class="col d-flex justify-content-between bg-white border-bottom mb-2"
           >
-            <h5 class="card-title">NUEVO MUNICIPIO</h5>
+            <h5 class="card-title">NUEVO SERVICIO PUBLICO</h5>
           </div>
-          <form th:action="@{/city/save}" th:object="${city}" method="POST">
+          <form th:action="@{/category/save}" th:object="${category}" method="POST">
             <div class="modal-body">
               <input type="hidden" th:field="*{id}"/>
               <div class="form-row">
                 <div class="form-group col">
-                  <label>Estado</label>
-                  <select
-                    class="form-control form-control-lg"
-                    th:field="*{state.id}"
-                  >
-                    <option
-                      th:each="state: ${listStates}"
-                      th:value="${state.id}"
-                      th:text="${state.name}"
-                    ></option>
-                  </select>
-                  <div th:if="${#fields.hasErrors('state')}" th:errors="*{state}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-                <div class="form-group col">
-                  <label>Municipio</label>
+                  <label>Servicio Publico</label>
                   <input
                     class="form-control form-control-lg"
                     type="text"
                     th:field="*{name}"
-                    placeholder="Nombre del Municipio"
+                    placeholder="Nombre del Servicio Publico"
                   />
-                  <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mb-3 mt-3"></div>
               </div>
             </div>
             <div class="card-footer">
               <div class="row float-right">
                 <div class="col-lg-12 float-right">
-                  <a th:href="@{/city/list}" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <a th:href="@{/category/list}" class="btn btn-secondary" data-bs-dismiss="modal">
                     <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Cancelar</span>
                   </a>
                   <button class="btn btn-primary" type="submit">

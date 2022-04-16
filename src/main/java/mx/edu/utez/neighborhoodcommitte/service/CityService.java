@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.edu.utez.neighborhoodcommitte.entity.City;
-import mx.edu.utez.neighborhoodcommitte.repository.CityRepository;
+import mx.edu.utez.neighborhoodcommitte.repository.ICityRepository;
 
 @Service
 public class CityService {
 
     @Autowired
-    private CityRepository cityRepository;
+    private ICityRepository cityRepository;
 
     public List<City> findAll() {
         return cityRepository.findAll();

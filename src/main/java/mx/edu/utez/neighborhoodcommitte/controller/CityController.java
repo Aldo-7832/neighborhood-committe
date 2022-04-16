@@ -1,5 +1,7 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,7 @@ import mx.edu.utez.neighborhoodcommitte.service.StateService;
 @Controller
 @RequestMapping(value ="/city")
 public class CityController {
-    
+
     @Autowired
     private CityService cityService;
 
@@ -44,7 +46,6 @@ public class CityController {
 
     @GetMapping("/create")
 	public String crearMascota(City city, Model modelo) {
-        System.out.println("Llega al metodo");
 		modelo.addAttribute("listStates", stateService.findAll());
 		return "city/createCity";
 	}
@@ -102,5 +103,5 @@ public class CityController {
             return "";
         }
     }
-
+    
 }
