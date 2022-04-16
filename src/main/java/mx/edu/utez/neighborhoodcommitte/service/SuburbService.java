@@ -18,8 +18,8 @@ public class SuburbService {
         return suburbRepository.findAll();
     }
 
-    public Suburb findById(long id) {
-        return suburbRepository.findById(id);
+    public Suburb findOne(long id) {
+        return suburbRepository.getById(id);
     }
 
     public boolean save(Suburb obj) {
