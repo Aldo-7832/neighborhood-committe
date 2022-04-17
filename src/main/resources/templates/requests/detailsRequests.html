@@ -19,9 +19,9 @@
     <div class="container ">
         <div class="row justify-content-center">
             <div class="col-5">
-                    <div style="background-color: rgba(252,0,0, 0.1)" >
+                    <div style="background-color: rgba(252,0,0, 0.1); border-radius: 20px">
                             <div class="col-9 ">
-                                <div class="container ">
+                                <div class="container " style="align-content: center">
                                     <img src="https://grupohidraulico.com.mx/wp-content/uploads/2019/04/drenaje.jpg"
                                          class="img-fluid rounded  " alt="..." >
                                 </div><br>
@@ -84,9 +84,12 @@
                                                     th:text="*{tmpRequest.paymentAmount}"
                                                     placeholder="cantidad"
                                             /><br>
-                                            <button  th:href="@{/committeeRequest/list}" class="btn btn-primary" type="submit">
-                                                <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Guardar</span>
-                                            </button>
+                                            <div class="col-lg-12 mb-3 float-right">
+                                                <a class="btn btn-primary" th:href="@{/request/update/{id} (id=${request.id})}">
+                                                    <ion-icon name="create-outline"></ion-icon><span
+                                                        class="d-sm-none d-md-none d-lg-inline d-xl-inline">Guardar Monto</span>
+                                                </a>
+                                            </div>
 
                                         </div>
                                     </strong>

@@ -43,8 +43,8 @@ public class Request implements Serializable {
     @Column(name = "payment_status", nullable = false)
     private int paymentStatus;
 
-    @Column(name = "payment_amount")
-    private double paymentAmount;
+    @Column(name = "payment_amount", nullable = true)
+    private Double paymentAmount;
 
     public Integer getStatus() {
         return status;
@@ -102,11 +102,13 @@ public class Request implements Serializable {
         this.paymentStatus = paymentStatus;
     }
 
-    public double getPaymentAmount() {
+
+
+    public Double  getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(double paymentAmount) {
+    public void setPaymentAmount(Double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
     

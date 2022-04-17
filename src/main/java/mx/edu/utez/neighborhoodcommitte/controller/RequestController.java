@@ -1,15 +1,11 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
-
 import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import mx.edu.utez.neighborhoodcommitte.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -49,6 +45,43 @@ public class RequestController {
         }else {
             redirectAttributes.addFlashAttribute("msg_error", "Registro No Encontrado");
             return "redirect:/requests/listRequests";
+        }
+
+
+    }
+    @GetMapping(value = "/update/{id}")
+    public String update(@PathVariable long id, Model modelo, RedirectAttributes redirectAttributes) {
+        Request request = requestService.findById(id);
+        if (request != null) {
+            modelo.addAttribute("request", request);
+            modelo.addAttribute("listRequests", requestService.findAll());
+            return "requests/listRequests";
+        }else{
+            return "requests/listRequests";
+        }
+    }
+
+    @PostMapping(value = "/save")
+    public String save(Model model, Request request, RedirectAttributes redirectAttributes) {
+        String msgOk = "";
+        String msgError = "";
+
+        if(request.getId() != null){
+            msgOk = "Solictud Actualizada correctamente";
+            msgError = "La solicitud NO pudo ser Actualizada correctamente";
+        }else{
+            msgOk = "Solicitud Guardada correctamente";
+            msgError = "La solicitud NO pudo ser Guardada correctamente";
+        }
+
+        boolean res = requestService.save(request);
+        System.out.println("ID: "+ request.getId());
+        if (res) {
+            redirectAttributes.addFlashAttribute("msg_success", msgOk);
+            return "redirect:/requests/list";
+        } else {
+            redirectAttributes.addFlashAttribute("msg_error", msgError);
+            return "";
         }
     }
 }
