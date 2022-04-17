@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Municipios</title>
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+    <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"> -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      li {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div th:insert="~{fragments/header :: header-admin}"></div>
+
+    <div class="container">
+      <div class="card">
+        <div class="card-header">REGISTRAR</div>
+        <div class="card-body">
+          <div
+            class="col d-flex justify-content-between bg-white border-bottom mb-2"
+          >
+            <h5 class="card-title">NUEVO USUARIO</h5>
+          </div>
+          <form th:action="@{/users/save}" th:object="${users}" method="POST">
+            <div class="modal-body">
+              <input type="hidden" th:field="*{id}"/>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Nombre</label>
+                    <input class="form-control form-control-lg" type="text" th:field="*{name}" placeholder="Nombre(s)"/>
+                </div>
+                <div class="form-group col-md-8">
+                    <label>Primer Apellido</label>
+                    <input class="form-control form-control-lg" type="text" th:field="*{lastName}" placeholder="Primer Apellido"/>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Segundo apellido</label>
+                    <input class="form-control form-control-lg" type="text" th:field="*{surname}" placeholder="Segundo Apellido"/>
+                </div>
+                <div class="form-group col-md-8">
+                    <label>Nombre de Usuario</label>
+                    <input class="form-control form-control-lg" type="text" th:field="*{username}" placeholder="Nombre de Usuario"/>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Teléfono</label>
+                    <input class="form-control form-control-lg" type="text" th:field="*{phone}" placeholder="Teléfono"/>
+                </div>
+                <div class="form-group col-md-8">
+                    <label>Identificación Oficial</label>
+                    <input class="form-control form-control-lg" type="file" th:field="*{profilePicture}"/>
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col">
+                    <h4>Credenciales</h4>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label>Correo electronico</label>
+                    <input class="form-control form-control-lg" type="text" th:field="*{email}" placeholder="Correo Electrónico"/>
+                </div>
+                <div class="form-group col-md-8">
+                    <label>Contraseña</label>
+                    <input class="form-control form-control-lg" type="text" th:field="*{password}" placeholder="Contraseña"/>
+                </div>
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col">
+                    <h4>Comité al que Pertenece</h4>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col">
+                  <label>Comité</label>
+                  <select class="form-control form-control-lg" th:field="*{committee.id}">
+                    <option th:each="committee: ${listCommittee}" th:value="${committee.id}" th:text="${committee.suburb.name}"></option>
+                  </select>
+                  <div th:if="${#fields.hasErrors('committee')}" th:errors="*{committee}" class="alert alert-danger mb-3 mt-3"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="row float-right">
+                <div class="col-lg-12 float-right">
+                  <a th:href="@{/users/list}" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Cancelar</span>
+                  </a>
+                  <button class="btn btn-primary" type="submit">
+                    <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Guardar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- <script th:src="@{/js/bootstrap.min.js}"></script> -->
+    <!--Ionicons-->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+
+    <script th:src="@{/js/toast.min.js}"></script>
+
+    <script th:if="${msg_success != null}">
+      new Toast({
+        message: "[[${msg_success}]]",
+        type: "success",
+      });
+    </script>
+    <script th:if="${msg_error != null}">
+      new Toast({
+        message: "[[${msg_error}]]",
+        type: "danger",
+      });
+    </script>
+  </body>
+</html>
