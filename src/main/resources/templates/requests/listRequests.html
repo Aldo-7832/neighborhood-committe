@@ -34,11 +34,7 @@
             <div
                     class="col d-flex justify-content-between bg-white border-bottom mb-2">
                 <h5 class="card-title">Solicitudes</h5>
-                <div class="text-end">
-                    <a th:href="@{/committeeRequest/create}" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createRequests">
-                        <ion-icon name="pencil"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> NUEVA SOLICITUD</span>
-                    </a>
-                </div>
+
             </div>
             <div class="row">
                 <div class="col-lg-12 mx-auto table-responsive">
@@ -46,15 +42,18 @@
                            id="states">
                         <thead>
                         <th scope="col" >Categoria</th>
+                        <th scope="col" >Descripción</th>
+                        <th scope="col" >Fecha</th>
                         <th scope="col" >Status</th>
                         <th scope="col" >Estado del pago</th>
                         <th scope="col" >Cantidad de Pago</th>
                         <th scope="col" >Detalles</th>
                         </thead>
                         <tbody>
-                        <tr th:each="tmpRequest : ${listCommitteeRequests}">
-                            <td th:text="${tmpRequest.requestsCategory.name}"></td>
-
+                        <tr th:each="tmpRequest : ${listRequests}">
+                            <td th:text="${tmpRequest.category.name}"></td>
+                            <td th:text="${tmpRequest.description}"></td>
+                            <td th:text="${tmpRequest.startDate}"></td>
                             <td th:switch="${tmpRequest.status}">
                                 <div th:case="'1'">
                                     <small class="text-muted"><span
@@ -69,7 +68,7 @@
                                             class="badge badge-pill badge-primary">Atendida</span></small>
                                 </div>
                             </td>
-                            <td th:switch="${tmpRequest.payment_status}">
+                            <td th:switch="${tmpRequest.paymentStatus}">
                                 <div th:case="'1'">
                                     <small class="text-muted"><span
                                             class="badge badge-pill badge-danger">Por cobrar</span></small>
@@ -79,20 +78,20 @@
                                             class="badge badge-pill badge-primary">Pago realizado</span></small>
                                 </div>
                             </td>
-                            <td th:text="${tmpRequest.payment_count}"></td>
-
-
+                            <td th:text="${tmpRequest.paymentAmount}"></td>
                             <td>
                                 <div class="text-end">
-                                    <a th:href="@{/committeeRequest/detalles/{id} (id=${tmpRequest.id})}" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#detailsPayment">
+                                    <a th:href="@{/request/detalles/{id} (id=${tmpRequest.id})}" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#detailsPayment">
                                         <ion-icon name="book"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Detalles</span>
                                     </a>
                                 </div>
 
                             </td>
 
-
                         </tr>
+
+
+
                         </tbody>
                     </table>
                 </div>

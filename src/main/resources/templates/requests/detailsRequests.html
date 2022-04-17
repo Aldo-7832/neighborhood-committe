@@ -19,45 +19,51 @@
     <div class="container ">
         <div class="row justify-content-center">
             <div class="col-5">
-                    <div style="background-color: rgba(252,0,0, 0.1)" >
+                    <div style="background-color: rgba(252,0,0, 0.1); border-radius: 20px">
                             <div class="col-9 ">
-                                <div class="container ">
+                                <div class="container " style="align-content: center">
                                     <img src="https://grupohidraulico.com.mx/wp-content/uploads/2019/04/drenaje.jpg"
                                          class="img-fluid rounded  " alt="..." >
                                 </div><br>
-                                <div class="col-12"  th:each="tmpRequest : ${committeeRequests}">
+                                <div class="col-12"  th:each="tmpRequest : ${request}">
                                     <h2 class="mb-3">Detalles</h2>
 
                                     <strong>
                                         Categoria:
-                                        <small th:text="${tmpRequest.requestsCategory.name}" class="text-muted"></small>
+                                        <small th:text="${tmpRequest.category.name}" class="text-muted"></small>
                                     </strong><br><br>
-
                                     <strong>
                                         Comentario:
-                                        <small th:text="${tmpRequest.commentary}" class="text-muted"></small>
+                                        <small th:text="${tmpRequest.description}" class="text-muted"></small>
                                     </strong><br><br>
-
+                                    <strong>
+                                        Usuario:
+                                        <small th:text="${tmpRequest.user.name}" class="text-muted"></small>
+                                    </strong><br><br>
+                                    <strong>
+                                        Fecha y Hora:
+                                        <small th:text="${tmpRequest.startDate}" class="text-muted"></small>
+                                    </strong><br><br>
                                     <strong>
                                         Estado:
                                         <small th:switch="${tmpRequest.status}" class="text-muted badge badge-pill ">
-                                                <div th:case="'1'">
-                                                    <small class="text-muted"><span
-                                                            class="badge badge-pill badge-danger">Cancelada</span></small>
-                                                </div>
-                                                <div th:case="'2'">
-                                                    <small class="text-muted"><span
-                                                            class="badge badge-pill badge-success">Canalizada</span></small>
-                                                </div>
-                                                <div th:case="'3'">
-                                                    <small class="text-muted"><span
-                                                            class="badge badge-pill badge-primary">Atendida</span></small>
-                                                </div>
+                                            <div th:case="'1'">
+                                                <small class="text-muted"><span
+                                                        class="badge badge-pill badge-danger">Cancelada</span></small>
+                                            </div>
+                                            <div th:case="'2'">
+                                                <small class="text-muted"><span
+                                                        class="badge badge-pill badge-success">Canalizada</span></small>
+                                            </div>
+                                            <div th:case="'3'">
+                                                <small class="text-muted"><span
+                                                        class="badge badge-pill badge-primary">Atendida</span></small>
+                                            </div>
                                         </small>
                                     </strong><br><br>
                                     <strong>
                                         Estado del pago:
-                                        <small th:switch="${tmpRequest.payment_status}" class="text-muted badge badge-pill ">
+                                        <small th:switch="${tmpRequest.paymentStatus}" class="text-muted badge badge-pill ">
                                             <div th:case="'1'">
                                                 <small class="text-muted"><span
                                                         class="badge badge-pill badge-danger">Por cobrar</span></small>
@@ -75,19 +81,18 @@
                                             <input
                                                     class="form-control form-control-lg"
                                                     type="text"
-                                                    th:text="*{tmpRequest.payment_count}"
+                                                    th:text="*{tmpRequest.paymentAmount}"
                                                     placeholder="cantidad"
                                             /><br>
-                                            <button  th:href="@{/committeeRequest/list}" class="btn btn-primary" type="submit">
-                                                <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Guardar</span>
-                                            </button>
+                                            <div class="col-lg-12 mb-3 float-right">
+                                                <a class="btn btn-primary" th:href="@{/request/update/{id} (id=${request.id})}">
+                                                    <ion-icon name="create-outline"></ion-icon><span
+                                                        class="d-sm-none d-md-none d-lg-inline d-xl-inline">Guardar Monto</span>
+                                                </a>
+                                            </div>
 
                                         </div>
                                     </strong>
-                                        <br><br>
-                                    <br><br>
-
-
                                 </div>
                             </div>
                     </div>
