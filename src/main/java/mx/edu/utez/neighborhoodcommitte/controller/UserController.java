@@ -61,6 +61,7 @@ public class UserController {
         Date date = new Date();
         user.setProfilePicture("imagen");
         user.setRegisteredDate(date);
+        user.setEnabled(1);
 
         if(user.getId() != null){
             msgOk = "Usuario Actualizado correctamente";

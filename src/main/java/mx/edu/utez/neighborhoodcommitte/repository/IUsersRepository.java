@@ -6,4 +6,5 @@ import mx.edu.utez.neighborhoodcommitte.entity.Users;
 
 public interface IUsersRepository extends JpaRepository<Users, Long> {
     public Users findById(long id);
+    Users findByUsername(String username);
 }
