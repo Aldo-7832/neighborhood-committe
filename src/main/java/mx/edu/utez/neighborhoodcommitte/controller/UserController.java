@@ -2,8 +2,6 @@ package mx.edu.utez.neighborhoodcommitte.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;

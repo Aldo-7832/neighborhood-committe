@@ -20,6 +20,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
+    @Autowired
+   private SimpleAuthenticationSuccessHandler successHandler;
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource)
@@ -49,7 +52,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
 
                 // Formulario de inicio de sesion no requiere autenticacion
-                .and().formLogin().loginPage("/login").permitAll();
+                .and().formLogin().successHandler(successHandler).loginPage("/login").permitAll();
     }
 
     @Bean
