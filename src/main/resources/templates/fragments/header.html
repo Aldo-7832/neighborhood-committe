@@ -1,32 +1,26 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="header-admin">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">COMVE</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/suburb/list}">Colonias</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/city/list}">Municipios</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/requestsCategory/list}">Servicios Publicos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Enlaces</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Presidentes de Comites</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-danger" href="#">Salir</a>
-          </li>
-        </ul>
-      </div>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">COMVE</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/city/list}">Municipios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/category/list}">Servicios Publicos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/users/list}">Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-danger" th:href="@{/logout}">Salir</a>
+        </li>
+      </ul>
     </div>
+  </div>
 </nav>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="header-committeeLink">

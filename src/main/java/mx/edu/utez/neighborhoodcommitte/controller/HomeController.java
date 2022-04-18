@@ -1,10 +1,8 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -12,9 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.security.core.Authentication;
 
-import mx.edu.utez.neighborhoodcommitte.entity.Users;
 import mx.edu.utez.neighborhoodcommitte.service.UsersService;
 
 @Controller
@@ -42,7 +38,7 @@ public class HomeController {
 	}
 	
 	// @GetMapping("/login")
-	
+
 	// public String mostrarIndex(Authentication authentication, HttpSession session) {
 	// 	String username = authentication.getName();
 	// 	System.out.println("Username: " + username);
