@@ -10,7 +10,6 @@
 </head>
 
 <body style="background-color: #e9ecef;">
-    <div th:insert="~{fragments/header :: header-admin}"></div>
 	<div class="container-fluid">    
 		<div class="row">
 			<div class="col-12">
@@ -20,7 +19,7 @@
 						<hr>
 						<form th:action="@{/login}" method="post" novalidate>
 							<div class="form-group col">
-								<label>Correo electrónico</label>
+								<label>Nombre de Usuario</label>
 								<input class="form-control form-control-lg" type="email" name="username" max="100"
 									required>
 							</div>

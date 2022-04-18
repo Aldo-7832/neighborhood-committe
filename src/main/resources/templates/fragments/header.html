@@ -16,9 +16,16 @@
           <a class="nav-link" th:href="@{/users/list}">Usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-danger" th:href="@{/logout}">Salir</a>
+          
+          
         </li>
       </ul>
+    </div>
+    <div class="text-end" sec:authorize="isAuthenticated()">
+      <a class="nav-link text-danger" th:href="@{/logout}">Salir</a>
+    </div>
+    <div class="text-end" sec:authorize="isAnonymous()">
+      <a class="nav-link" th:href="@{/login}">Iniciar Sesión</a>
     </div>
   </div>
 </nav>

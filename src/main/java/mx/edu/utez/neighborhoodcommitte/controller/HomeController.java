@@ -29,7 +29,7 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String index() {
-		return "login";
+		return "index";
 	}
 
 	@GetMapping("/login")
