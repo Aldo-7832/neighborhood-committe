@@ -60,6 +60,7 @@
                                     type="text"
                                     th:field="*{name}"
                                     placeholder="Nombre de la colonia"
+                                    required
                             />
                             <label>Código Postal</label>
                             <input
@@ -67,6 +68,8 @@
                                     type="number"
                                     th:field="*{postalCode}"
                                     placeholder="Código postal"
+                                    required
+                                    min="10000" max="99999"
                             />
                         </div>
                     </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Municipios</title>
+    <title>Colonias</title>
     <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
     <!-- <link rel="stylesheet" th:href="@{/css/datatables.min.css}" /> -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
@@ -55,15 +55,21 @@
                         </thead>
                         <tbody>
                         <tr th:each="suburb: ${listSuburbs}">
-                            <td>1</td>
+                            <th scope="row">1</th>
                             <td>[[${suburb.name}]]</td>
                             <td>[[${suburb.postalCode}]]</td>
                             <td>[[${suburb.city.name}]]</td>
                             <td class="text-end">
-                                <div class="col-lg-12 mb-3 float-right">
+                                <div class="col-lg-6 mb-3 float-right">
                                     <a class="btn btn-primary" th:href="@{/suburb/update/{id} (id=${suburb.id})}">
                                         <ion-icon name="create-outline"></ion-icon><span
-                                            class="d-sm-none d-md-none d-lg-inline d-xl-inline">Actualizar</span>
+                                            class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Actualizar</span>
+                                    </a>
+                                </div>
+                                <div class="col-lg-6 mb-3 float-left">
+                                    <a class="btn btn-danger" th:href="@{/suburb/delete/{id} (id=${suburb.id})}">
+                                        <ion-icon name="trash-outline"></ion-icon><span
+                                            class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Eliminar</span>
                                     </a>
                                 </div>
                             </td>

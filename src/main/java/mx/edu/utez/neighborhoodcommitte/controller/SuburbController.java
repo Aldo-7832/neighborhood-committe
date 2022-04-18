@@ -87,21 +87,21 @@ public class SuburbController {
         }
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @GetMapping(value = "/delete/{id}")
     public String delete(Model model, @PathVariable("id") long id, RedirectAttributes redirectAttributes) {
         Suburb suburb = suburbService.findOne(id);
         if (!suburb.equals(null)) {
             boolean res = suburbService.delete(id);
             if (res) {
-                redirectAttributes.addFlashAttribute("msg_success", "Asentamiento eliminado correctamente");
-                return "";
+                redirectAttributes.addFlashAttribute("msg_success", "Colonia eliminada correctamente");
+                return "redirect:/suburb/list";
             } else {
-                redirectAttributes.addFlashAttribute("msg_error", "No se pudo eliminar el asentamiento");
-                return "";
+                redirectAttributes.addFlashAttribute("msg_error", "No se pudo eliminar la colonia");
+                return "redirect:/suburb/list";
             }
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", "No se encontró el asentamiento solicitado");
-            return "";
+            redirectAttributes.addFlashAttribute("msg_error", "No se encontró la colonia solicitada");
+            return "redirect:/suburb/list";
         }
     }
 
