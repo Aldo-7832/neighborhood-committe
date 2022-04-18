@@ -41,7 +41,7 @@ public class CityController {
         } else{
             redirectAttributes.addFlashAttribute("msg_error", "No se encontró la ciudad solicitada");
         }
-        return "";
+        return "users/createUser";
     }
 
     @GetMapping("/create")
