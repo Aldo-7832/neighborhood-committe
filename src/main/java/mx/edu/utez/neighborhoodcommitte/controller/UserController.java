@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,6 +21,7 @@ import mx.edu.utez.neighborhoodcommitte.entity.Users;
 import mx.edu.utez.neighborhoodcommitte.service.CommitteeService;
 import mx.edu.utez.neighborhoodcommitte.service.RolesService;
 import mx.edu.utez.neighborhoodcommitte.service.UsersService;
+import mx.edu.utez.neighborhoodcommitte.util.ImagenUtileria;
 
 @Controller
 @RequestMapping(value ="/users")
@@ -60,38 +62,8 @@ public class UserController {
 		return "users/createUser";
 	}
 
-    // @PostMapping(value = "/save")
-    // public String save(Model model, Users user, RedirectAttributes redirectAttributes) {
-    //     String msgOk = "";
-    //     String msgError = "";
-
-    //     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    //     Date date = new Date();
-    //     user.setProfilePicture("imagen");
-    //     user.setRegisteredDate(date);
-    //     user.setEnabled(1);
-
-    //     if(user.getId() != null){
-    //         msgOk = "Usuario Actualizado correctamente";
-    //         msgError = "El usuario NO pudo ser Actualizado correctamente";
-    //     }else{
-    //         msgOk = "Usuario Guardado correctamente";
-    //         msgError = "El Usuario NO pudo ser Guardado correctamente";
-    //     }
-
-    //     boolean res = userService.save(user);
-    //     if (res) {
-    //         redirectAttributes.addFlashAttribute("msg_success", msgOk);
-    //         return "redirect:/users/list";
-    //     } else {
-    //         redirectAttributes.addFlashAttribute("msg_error", msgError);
-    //         return "redirect:/users/create";
-    //     }
-    // }
-
     @PostMapping("/signup")
 	public String guardarUsuario(@RequestParam("tipoUsuario") String tipoUsuario, Users user, RedirectAttributes redirectAttributes) {
-        //DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
         user.setProfilePicture("imagen");
         user.setRegisteredDate(date);
@@ -115,7 +87,7 @@ public class UserController {
 			return "redirect:/login";
 		} else {
 			redirectAttributes.addFlashAttribute("msg_error", "¡Registro fallido! Por favor intenta de nuevo.");
-			return "redirect:/administrador/dashboard";
+			return "redirect:/users/list";
 		}
 	}
 }

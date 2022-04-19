@@ -39,35 +39,30 @@
           <form th:action="@{/users/signup}" th:object="${users}" method="POST">
             <div class="modal-body">
               <input type="hidden" th:field="*{id}"/>
+              <input type="hidden" th:field="*{profilePicture}"/>
               <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Nombre</label>
                     <input class="form-control form-control-lg" type="text" th:field="*{name}" placeholder="Nombre(s)"/>
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
                 <div class="form-group col-md-8">
                     <label>Primer Apellido</label>
                     <input class="form-control form-control-lg" type="text" th:field="*{lastName}" placeholder="Primer Apellido"/>
+                    <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Segundo apellido</label>
                     <input class="form-control form-control-lg" type="text" th:field="*{surname}" placeholder="Segundo Apellido"/>
+                    <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
                 <div class="form-group col-md-8">
-                    <label>Nombre de Usuario</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{username}" placeholder="Nombre de Usuario"/>
-                </div>
+                  <label>Telefono</label>
+                  <input class="form-control form-control-lg" type="text" th:field="*{phone}" placeholder="Teléfono"/>
+                  <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger mb-3 mt-3"></div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Telefono</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{phone}" placeholder="Teléfono"/>
-                </div>
-                <div class="form-group col-md-8">
-                    <label>Identificación Oficial</label>
-                    <input class="form-control form-control-lg" type="file" th:field="*{profilePicture}"/>
-                </div>
               </div>
               <hr>
               <div class="form-row">
@@ -98,11 +93,20 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Correo electronico</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{email}" placeholder="Correo Electrónico"/>
+                    <input class="form-control form-control-lg" type="text" th:field="*{email}" placeholder="Correo Electr�nico"/>
+                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
                 <div class="form-group col-md-8">
-                    <label>Contraseña</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{password}" placeholder="Contraseña"/>
+                  <label>Nombre de Usuario</label>
+                  <input class="form-control form-control-lg" type="text" th:field="*{username}" placeholder="Nombre de Usuario"/>
+                  <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger mb-3 mt-3"></div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                  <label>Contrase�a</label>
+                  <input class="form-control form-control-lg" type="password" th:field="*{password}" placeholder="Contrase�a"/>
+                  <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
               </div>
               <hr>

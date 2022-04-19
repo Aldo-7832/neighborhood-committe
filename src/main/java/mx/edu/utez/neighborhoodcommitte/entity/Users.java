@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "users")
@@ -28,21 +29,27 @@ public class Users implements Serializable {
     private Long id;
 
     @Column(name = "name", nullable = false, length = 150)
+    @NotBlank(message="El nombre no puede estar vacio")
     private String name;
 
     @Column(name = "lastname", nullable = false, length = 150)
+    @NotBlank(message="El apellido no puede estar vacio")
     private String lastName;
 
     @Column(name = "surname", nullable = true, length = 150)
+    @NotBlank(message="El apellido no puede estar vacio")
     private String surname;
 
     @Column(name = "username", nullable = false, length = 150, unique = true)
+    @NotBlank(message="El nombre de usuario no puede estar vacio")
     private String username;
 
     @Column(name = "phone", nullable = false, length = 20)
+    @NotBlank(message="El número no puede estar vacio")
     private String phone;
 
     @Column(name = "password", nullable = false, length = 255)
+    @NotBlank(message="La contraseña no puede estar vacia")
     private String password;
 
     @Column(name = "enabled", nullable = false)
@@ -56,6 +63,7 @@ public class Users implements Serializable {
     private Committee committee;
 
     @Column(name = "email", nullable = false, length = 150, unique = true)
+    @NotBlank(message="El Correo electronico no puede estar vacio")
     private String email;
 
     @Column(name = "employee_number", nullable = true, length = 100)
