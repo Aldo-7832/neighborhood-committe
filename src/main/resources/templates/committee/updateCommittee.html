@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/menu.css}" />
+    <!--Toast-->
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+</head>
+
+<body>
+<div class="container-fluid">
+
+    <div th:insert="~{fragments/header :: header-committeeLink}"></div>
+
+
+    <div class="col-9">
+        <div class="card mt-3">
+            <div class="card-body">
+                <h2 class="mb-3">Nuevo Comité</h2>
+                <form th:action="@{/committee/save}" method="POST" th:object="${committee}" >
+                    <input type="hidden" th:field="*{id}">
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Nombre</label>
+                            <input class="form-control form-control-lg" type="text" th:field="*{name}"
+                                   placeholder="">
+                        </div>
+                        <div class="form-group col">
+                            <label>Código Postal</label>
+                            <input class="form-control form-control-lg" type="text" th:field="*{postalCode}"
+                                   placeholder="">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <label>Estado</label>
+                                <select class="form-control form-control-lg" th:field="*{state.id}">
+                                    <option th:each="tmpState: ${listStates}" th:value="${tmpState.id}"
+                                            th:text="${tmpState.name}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col">
+                                <label>Ciudad</label>
+                                <select class="form-control form-control-lg" th:field="*{city.id}">
+                                    <option
+                                            th:each="tmpCity: ${listCities}" th:value="${tmpCity.id}"
+                                            th:text="${tmpCity.name}">
+
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col">
+                                <label>Suburbio</label>
+                                <select class="form-control form-control-lg" th:field="*{suburb.id}">
+                                    <option th:each="tmpSuburb: ${listSuburbs}" th:value="${tmpSuburb.id}"
+                                            th:text="${tmpSuburb.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary btn-lg btn-block mt-3">
+                            <ion-icon name="checkmark"></ion-icon>&nbsp;Guardar
+                        </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<!--Ionicons-->
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+<!--Toast-->
+<script th:src="@{/js/toast.min.js}"></script>
+
+<script th:if="${msg_success != null}">
+    new Toast({
+        message: '[[${msg_success}]]',
+        type: 'success'
+    });
+</script>
+<script th:if="${msg_error != null}">
+    new Toast({
+        message: '[[${msg_error}]]',
+        type: 'danger'
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: '#detalles',
+        plugins: "textcolor, table lists code",
+        toolbar: "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor table code"
+    });
+</script>
+
+</body>
+
+</html>
