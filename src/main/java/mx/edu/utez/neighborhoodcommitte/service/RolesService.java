@@ -40,5 +40,8 @@ public class RolesService {
         }
         return flag;
     }
-    
+
+    public Roles findByAuthority(String authority) {
+		return rolesRepository.findByAuthority(authority);
+	}    
 }

@@ -80,22 +80,6 @@ public class HomeController {
 		return "presidente/dashboard";
 	}
 
-	// @GetMapping("/login")
-
-	// public String mostrarIndex(Authentication authentication, HttpSession
-	// session) {
-	// String username = authentication.getName();
-	// System.out.println("Username: " + username);
-	// for(GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-	// System.out.println("Role: " + grantedAuthority.getAuthority());
-	// }
-	// Users user = usersService.findByUsername(username);
-	// //Add data user session
-	// System.out.println("Nombre: " + user.getName());
-	// session.setAttribute("user", user);
-	// return "redirect:/";
-	// }
-
 	@GetMapping("/logout")
 	public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		try {

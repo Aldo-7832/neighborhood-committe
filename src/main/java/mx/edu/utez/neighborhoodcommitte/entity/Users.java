@@ -2,6 +2,7 @@ package mx.edu.utez.neighborhoodcommitte.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -204,6 +205,11 @@ public class Users implements Serializable {
         this.logoutDate = logoutDate;
     }
 
-    
-
+    // Metodo para agregar roles
+    public void agregarRol(Roles role) {
+        if (roles == null) {
+            roles = new HashSet<Roles>();
+        }
+        roles.add(role);
+    } 
 }

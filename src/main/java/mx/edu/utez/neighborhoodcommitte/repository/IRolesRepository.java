@@ -6,4 +6,5 @@ import mx.edu.utez.neighborhoodcommitte.entity.Roles;
 
 public interface IRolesRepository extends JpaRepository<Roles, Long> {
     public Roles findById(long id);
+    Roles findByAuthority(String authority);
 }

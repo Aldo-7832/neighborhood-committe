@@ -45,4 +45,13 @@ public class UsersService {
 		return usersRepository.findByUsername(username);
 	}
     
+    public boolean guardar(Users user) {
+       try {
+        usersRepository.save(user);
+           return true;
+       } catch (Exception e) {
+           System.err.println(e.getMessage());
+           return false;
+       }
+    }
 }
