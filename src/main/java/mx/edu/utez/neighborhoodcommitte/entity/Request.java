@@ -102,8 +102,6 @@ public class Request implements Serializable {
         this.paymentStatus = paymentStatus;
     }
 
-
-
     public Double  getPaymentAmount() {
         return paymentAmount;
     }
@@ -111,5 +109,5 @@ public class Request implements Serializable {
     public void setPaymentAmount(Double paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
-    
+
 }

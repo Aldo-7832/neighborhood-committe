@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles</title>
+    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+    <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"> -->
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+    />
+
+    <style>
+        li {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div th:insert="~{fragments/header :: header-admin}"></div>
+        <div class="container">
+            <div class="card "  >
+                <div class="card-header">Detalles
+        </div>
+        <div class="card-body">
+            <div
+                    class="col d-flex  bg-white border-bottom "
+            >
+            </div>
+            <div class="col-12"  th:each="tmpRequest : ${request}">
+                <strong>
+                    Categoria:
+                    <small th:text="${tmpRequest.category.name}" class="text-muted"></small>
+                </strong><br><br>
+                <strong>
+                    Comentario:
+                    <small th:text="${tmpRequest.description}" class="text-muted"></small>
+                </strong><br><br>
+                <strong>
+                    Usuario:
+                    <small th:text="${tmpRequest.user.name}" class="text-muted"></small>
+                </strong><br><br>
+                <strong>
+                    Fecha y Hora:
+                    <small th:text="${tmpRequest.startDate}" class="text-muted"></small>
+                </strong><br><br>
+                <strong>
+                    Estado:
+                    <small th:switch="${tmpRequest.status}" class="text-muted badge badge-pill ">
+                        <div th:case="'1'">
+                            <small class="text-muted"><span
+                                    class="badge badge-pill badge-danger">Cancelada</span></small>
+                        </div>
+                        <div th:case="'2'">
+                            <small class="text-muted"><span
+                                    class="badge badge-pill badge-success">Canalizada</span></small>
+                        </div>
+                        <div th:case="'3'">
+                            <small class="text-muted"><span
+                                    class="badge badge-pill badge-primary">Atendida</span></small>
+                        </div>
+                    </small>
+                </strong><br><br>
+                <strong>
+                    Estado del pago:
+                    <small th:switch="${tmpRequest.paymentStatus}" class="text-muted badge badge-pill ">
+                        <div th:case="'1'">
+                            <small class="text-muted"><span
+                                    class="badge badge-pill badge-danger">Por cobrar</span></small>
+                        </div>
+                        <div th:case="'2'">
+                            <small class="text-muted"><span
+                                    class="badge badge-pill badge-primary">Pago realizado</span></small>
+                        </div>
+                    </small>
+                </strong><br><br>
+                <strong>
+                    Monto de pago:
+                    <small th:text="${tmpRequest.paymentAmount}" class="text-muted"></small>
+                </strong><br><br>
+
+                <div class="card-footer">
+                    <div class="row float-right">
+                        <div class="col-lg-12 float-right">
+                            <a th:href="@{/request/list}" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline">Regresar</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                </strong>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <script th:src="@{/js/bootstrap.min.js}"></script> -->
+<!--Ionicons-->
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+
+<script th:src="@{/js/toast.min.js}"></script>
+
+<script th:if="${msg_success != null}">
+    new Toast({
+        message: "[[${msg_success}]]",
+        type: "success",
+    });
+</script>
+<script th:if="${msg_error != null}">
+    new Toast({
+        message: "[[${msg_error}]]",
+        type: "danger",
+    });
+</script>
+</body>
+</html>

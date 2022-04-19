@@ -47,7 +47,7 @@
                         <th scope="col" >Status</th>
                         <th scope="col" >Estado del pago</th>
                         <th scope="col" >Cantidad de Pago</th>
-                        <th scope="col" >Detalles</th>
+                        <th scope="col" >Acciones</th>
                         </thead>
                         <tbody>
                         <tr th:each="tmpRequest : ${listRequests}">
@@ -85,13 +85,15 @@
                                         <ion-icon name="book"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Detalles</span>
                                     </a>
                                 </div>
+                                <div class="text-end">
+                                    <a th:href="@{/request/amount/{id} (id=${tmpRequest.id})}" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#detailsPayment">
+                                        <ion-icon name="pencil"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline">Asignar monto</span>
+                                    </a>
+                                </div>
 
                             </td>
 
                         </tr>
-
-
-
                         </tbody>
                     </table>
                 </div>

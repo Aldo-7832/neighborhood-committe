@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Detalles</title>
+    <title>Asignacion de pago</title>
     <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
     <link
             rel="stylesheet"
@@ -16,111 +16,57 @@
 </head>
 
 <body>
-    <div class="container ">
-        <div class="row justify-content-center">
-            <div class="col-5">
-                    <div style="background-color: rgba(252,0,0, 0.1); border-radius: 20px">
-                            <div class="col-9 ">
-                                <div class="container " style="align-content: center">
-                                    <img src="https://grupohidraulico.com.mx/wp-content/uploads/2019/04/drenaje.jpg"
-                                         class="img-fluid rounded  " alt="..." >
-                                </div><br>
-                                <div class="col-12"  th:each="tmpRequest : ${request}">
-                                    <h2 class="mb-3">Detalles</h2>
-
-                                    <strong>
-                                        Categoria:
-                                        <small th:text="${tmpRequest.category.name}" class="text-muted"></small>
-                                    </strong><br><br>
-                                    <strong>
-                                        Comentario:
-                                        <small th:text="${tmpRequest.description}" class="text-muted"></small>
-                                    </strong><br><br>
-                                    <strong>
-                                        Usuario:
-                                        <small th:text="${tmpRequest.user.name}" class="text-muted"></small>
-                                    </strong><br><br>
-                                    <strong>
-                                        Fecha y Hora:
-                                        <small th:text="${tmpRequest.startDate}" class="text-muted"></small>
-                                    </strong><br><br>
-                                    <strong>
-                                        Estado:
-                                        <small th:switch="${tmpRequest.status}" class="text-muted badge badge-pill ">
-                                            <div th:case="'1'">
-                                                <small class="text-muted"><span
-                                                        class="badge badge-pill badge-danger">Cancelada</span></small>
-                                            </div>
-                                            <div th:case="'2'">
-                                                <small class="text-muted"><span
-                                                        class="badge badge-pill badge-success">Canalizada</span></small>
-                                            </div>
-                                            <div th:case="'3'">
-                                                <small class="text-muted"><span
-                                                        class="badge badge-pill badge-primary">Atendida</span></small>
-                                            </div>
-                                        </small>
-                                    </strong><br><br>
-                                    <strong>
-                                        Estado del pago:
-                                        <small th:switch="${tmpRequest.paymentStatus}" class="text-muted badge badge-pill ">
-                                            <div th:case="'1'">
-                                                <small class="text-muted"><span
-                                                        class="badge badge-pill badge-danger">Por cobrar</span></small>
-                                            </div>
-                                            <div th:case="'2'">
-                                                <small class="text-muted"><span
-                                                        class="badge badge-pill badge-primary">Pago realizado</span></small>
-                                            </div>
-                                        </small>
-                                    </strong><br><br>
-
-                                    <strong>
-                                        <div class="form-group col">
-                                            <label>Cantidad de pago</label>
-                                            <input
-                                                    class="form-control form-control-lg"
-                                                    type="text"
-                                                    th:text="*{tmpRequest.paymentAmount}"
-                                                    placeholder="cantidad"
-                                            /><br>
-                                            <div class="col-lg-12 mb-3 float-right">
-                                                <a class="btn btn-primary" th:href="@{/request/update/{id} (id=${request.id})}">
-                                                    <ion-icon name="create-outline"></ion-icon><span
-                                                        class="d-sm-none d-md-none d-lg-inline d-xl-inline">Guardar Monto</span>
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                    </strong>
-                                </div>
-                            </div>
+<div class="container">
+    <div class="card">
+        <div class="card-header">Asignacion de pago</div>
+        <div class="card-body">
+            <div class="col d-flex justify-content-between bg-white border-bottom mb-2"></div>
+            <form th:action="@{/request/update}" method="POST" th:object="${request}">
+                <div class="modal-body">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="form-group col">
+                        <input class="form-control form-control-lg" type="number" th:field="*{paymentAmount}"/>
                     </div>
-            </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row float-right">
+                        <div class="col-lg-12 float-right">
+                            <a th:href="@{/request/list}" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Cancelar</span>
+                            </a>
+                            <button type="submit" class="btn btn-primary" >
+                                <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Guardar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <script
-            type="module"
-            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-            nomodule
-            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
+</div>
 
-    <script th:src="@{/js/toast.min.js}"></script>
+<script
+        type="module"
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+        nomodule
+        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
 
-    <script th:if="${msg_success != null}">
-        new Toast({
-            message: "[[${msg_success}]]",
-            type: "success",
-        });
-    </script>
-    <script th:if="${msg_error != null}">
-        new Toast({
-            message: "[[${msg_error}]]",
-            type: "danger",
-        });
-    </script>
+<script th:src="@{/js/toast.min.js}"></script>
+
+<script th:if="${msg_success != null}">
+    new Toast({
+        message: "[[${msg_success}]]",
+        type: "success",
+    });
+</script>
+<script th:if="${msg_error != null}">
+    new Toast({
+        message: "[[${msg_error}]]",
+        type: "danger",
+    });
+</script>
 </body>
 </html>

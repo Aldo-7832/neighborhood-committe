@@ -18,18 +18,20 @@ public class RequestService {
         return requestRepository.findAll();
     }
 
+
     public Request findById(long id) {
 
-        return requestRepository.findById(id);
+        return requestRepository.getById(id);
     }
 
     public boolean save(Request obj) {
-        boolean flag = false;
-        Request tmp = requestRepository.save(obj);
-        if (!tmp.equals(null)) {
-            flag = true;
+        try {
+            requestRepository.save(obj);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
-        return flag;
     }
 
     public boolean delete(long id) {
