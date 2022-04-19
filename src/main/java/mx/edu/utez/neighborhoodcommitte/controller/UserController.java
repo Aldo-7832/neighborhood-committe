@@ -2,8 +2,6 @@ package mx.edu.utez.neighborhoodcommitte.controller;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +59,7 @@ public class UserController {
         Date date = new Date();
         user.setProfilePicture("imagen");
         user.setRegisteredDate(date);
+        user.setEnabled(1);
 
         if(user.getId() != null){
             msgOk = "Usuario Actualizado correctamente";
