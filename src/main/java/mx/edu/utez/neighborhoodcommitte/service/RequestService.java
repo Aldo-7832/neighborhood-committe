@@ -18,6 +18,10 @@ public class RequestService {
         return requestRepository.findAll();
     }
 
+    public List<Request> findAllByCommitteeId(long id) {
+        return requestRepository.findAllByCommitteeId(id);
+    }
+
 
     public Request findById(long id) {
 

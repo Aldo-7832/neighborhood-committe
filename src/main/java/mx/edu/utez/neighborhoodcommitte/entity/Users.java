@@ -45,11 +45,11 @@ public class Users implements Serializable {
     private String username;
 
     @Column(name = "phone", nullable = false, length = 20)
-    @NotBlank(message="El número no puede estar vacio")
+    @NotBlank(message="El nÃºmero no puede estar vacio")
     private String phone;
 
     @Column(name = "password", nullable = false, length = 255)
-    @NotBlank(message="La contraseña no puede estar vacia")
+    @NotBlank(message="La contraseÃ±a no puede estar vacia")
     private String password;
 
     @Column(name = "enabled", nullable = false)

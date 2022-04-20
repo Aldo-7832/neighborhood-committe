@@ -1,7 +1,5 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -21,7 +18,6 @@ import mx.edu.utez.neighborhoodcommitte.entity.Users;
 import mx.edu.utez.neighborhoodcommitte.service.CommitteeService;
 import mx.edu.utez.neighborhoodcommitte.service.RolesService;
 import mx.edu.utez.neighborhoodcommitte.service.UsersService;
-import mx.edu.utez.neighborhoodcommitte.util.ImagenUtileria;
 
 @Controller
 @RequestMapping(value ="/users")
@@ -83,10 +79,10 @@ public class UserController {
 
 		boolean respuesta = userService.guardar(user);
 		if (respuesta) {
-			redirectAttributes.addFlashAttribute("msg_success", "Se Registro Exitoso. Ya Puede Iniciar Sesión");
+			redirectAttributes.addFlashAttribute("msg_success", "Se Registro Exitoso. Ya Puede Iniciar SesiÃ³n");
 			return "redirect:/login";
 		} else {
-			redirectAttributes.addFlashAttribute("msg_error", "¡Registro fallido! Por favor intenta de nuevo.");
+			redirectAttributes.addFlashAttribute("msg_error", "Â¡Registro fallido! Por favor intenta de nuevo.");
 			return "redirect:/users/list";
 		}
 	}

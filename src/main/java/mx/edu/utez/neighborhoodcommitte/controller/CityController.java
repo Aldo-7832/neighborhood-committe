@@ -62,7 +62,6 @@ public class CityController {
         }
 
         boolean res = cityService.save(city);
-        System.out.println("ID: "+ city.getId());
         if (res) {
             redirectAttributes.addFlashAttribute("msg_success", msgOk);
             return "redirect:/city/list";

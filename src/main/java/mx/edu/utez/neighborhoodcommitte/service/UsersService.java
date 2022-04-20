@@ -50,7 +50,7 @@ public class UsersService {
         usersRepository.save(user);
            return true;
        } catch (Exception e) {
-           System.err.println(e.getMessage());
+           e.printStackTrace();
            return false;
        }
     }

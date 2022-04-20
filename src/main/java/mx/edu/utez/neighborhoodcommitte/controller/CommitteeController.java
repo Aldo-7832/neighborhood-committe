@@ -1,7 +1,5 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
-import mx.edu.utez.neighborhoodcommitte.entity.City;
-import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import mx.edu.utez.neighborhoodcommitte.service.CityService;
 import mx.edu.utez.neighborhoodcommitte.service.StateService;
 import mx.edu.utez.neighborhoodcommitte.service.SuburbService;
@@ -13,8 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Committee;
 import mx.edu.utez.neighborhoodcommitte.service.CommitteeService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping(value = "/committee")
@@ -33,7 +29,6 @@ public class CommitteeController {
 
     @GetMapping(value = "/list")
     public String findAll(Model model) {
-        List<Committee> listCommittee = committeeService.findAll();
         model.addAttribute("listCommittees", committeeService.findAll());
         return "committee/listAllCommittees";
     }
@@ -42,7 +37,6 @@ public class CommitteeController {
 
     @GetMapping("/create")
     public String createCommittee(Committee committee, Model model) {
-        System.out.println("Llega al metodo");
         model.addAttribute("listCities", cityService.findAll());
         model.addAttribute("listSuburbs", suburbService.findAll());
         model.addAttribute("listStates", stateService.findAll());
@@ -75,7 +69,6 @@ public class CommitteeController {
         }
 
         boolean res = committeeService.save(committee);
-        System.out.println("ID: "+ committee.getId());
         if (res) {
             redirectAttributes.addFlashAttribute("msg_success", msgOk);
             return "redirect:/committee/list";

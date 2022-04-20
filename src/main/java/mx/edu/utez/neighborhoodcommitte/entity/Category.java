@@ -21,8 +21,8 @@ public class Category implements Serializable {
 
     @Column(name = "name", nullable = false, length = 150)
     @NotBlank(message="El nombre no puede estar vacio")
-    @Size(min = 2, message="El mensaje debe ser minimo de 2 caracteres")
-    @Size(max = 150, message="El mensaje debe ser maximo de 50 caracteres")
+    @Size(min = 2, message="El nombre debe ser minimo de 2 caracteres")
+    @Size(max = 150, message="El nombre debe ser maximo de 150 caracteres")
     private String name;
 
     public Long getId() {
