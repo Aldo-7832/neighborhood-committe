@@ -219,5 +219,16 @@ public class Users implements Serializable {
             roles = new HashSet<Roles>();
         }
         roles.add(role);
+    }
+
+    @Override
+    public String toString() {
+        return "Users [committee=" + committee + ", email=" + email + ", employeeNumber=" + employeeNumber
+                + ", enabled=" + enabled + ", id=" + id + ", lastName=" + lastName + ", loginDate=" + loginDate
+                + ", logoutDate=" + logoutDate + ", name=" + name + ", password=" + password + ", phone=" + phone
+                + ", profilePicture=" + profilePicture + ", registeredDate=" + registeredDate + ", roles=" + roles
+                + ", surname=" + surname + ", username=" + username + "]";
     } 
+
+    
 }

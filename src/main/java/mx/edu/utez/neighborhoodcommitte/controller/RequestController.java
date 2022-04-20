@@ -84,6 +84,7 @@ public class RequestController {
         obj.setStatus(1);
         obj.setPaymentStatus(1);
         obj.setUser(usersService.findById(user.getId()));
+        obj.getUser().setPassword(usersService.findPasswordById(user.getId()));
         boolean res1 = requestService.save(obj);
         if (res1) {
             if (!multipartFile.isEmpty()) {

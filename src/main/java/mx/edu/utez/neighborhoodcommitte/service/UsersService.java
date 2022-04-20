@@ -22,6 +22,10 @@ public class UsersService {
         return usersRepository.findById(id);
     }
 
+    public String findPasswordById(long id) {
+        return usersRepository.findPasswordById(id);
+    }
+
     public boolean save(Users obj) {
         boolean flag = false;
         Users tmp = usersRepository.save(obj);

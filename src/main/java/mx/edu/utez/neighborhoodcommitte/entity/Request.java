@@ -110,4 +110,13 @@ public class Request implements Serializable {
         this.paymentAmount = paymentAmount;
     }
 
+    @Override
+    public String toString() {
+        return "Request [category=" + category + ", description=" + description + ", id=" + id + ", paymentAmount="
+                + paymentAmount + ", paymentStatus=" + paymentStatus + ", startDate=" + startDate + ", status=" + status
+                + ", user=" + user.toString() + "]";
+    }
+
+    
+
 }

@@ -48,7 +48,10 @@
                             <tbody>
                                 <tr th:each="tmpRequest : ${requestList}">
                                     <td th:text="${tmpRequest.category.name}"></td>
-                                    <td th:text="${tmpRequest.description}"></td>
+                                    <td>
+                                        <!--<p th:utext="${tmpRequest.description}"></p>-->
+                                        <p th:utext="${tmpRequest.description.length > 10 ? (tmpRequest.description.substring(0, 13) + '...') : tmpRequest.description}"></p>
+                                    </td>
                                     <td th:text="${tmpRequest.startDate}"></td>
                                     <td th:switch="${tmpRequest.status}">
                                         <div th:case="'1'">
