@@ -18,6 +18,10 @@ public class RequestAttachmentsService {
         return attachmentsRepository.findAll();
     }
 
+    public RequestAttachments findByRequestId(long id){
+        return attachmentsRepository.findAttachmentsByRequestId(id);
+    }
+
     public RequestAttachments findById(long id) {
         return attachmentsRepository.findById(id);
     }

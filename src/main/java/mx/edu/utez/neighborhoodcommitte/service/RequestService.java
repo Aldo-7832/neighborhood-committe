@@ -22,6 +22,10 @@ public class RequestService {
         return requestRepository.findAllByCommitteeId(id);
     }
 
+    public List<Request> findAllUnpaidByCommitteeId(long id) {
+        return requestRepository.findAllUnpaidByCommitteeId(id);
+    }
+
 
     public Request findById(long id) {
 

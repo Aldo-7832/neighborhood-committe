@@ -9,7 +9,7 @@ public class ImagenUtileria {
     public static String guardarImagen(MultipartFile multipartFile, String ruta) {
 		String nombreImagen = multipartFile.getOriginalFilename();
 		try {
-			String rutaArchivo = ruta + "/" + nombreImagen;
+			String rutaArchivo = ruta + "/" + nombreImagen.replaceAll(" ", "").replaceAll("-", "").replace("°", "");
 			File imagen = new File(rutaArchivo);
 			multipartFile.transferTo(imagen);
 			return nombreImagen;

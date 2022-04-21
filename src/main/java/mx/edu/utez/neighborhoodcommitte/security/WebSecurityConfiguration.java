@@ -36,7 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests().antMatchers(
                 // Los recursos estaticos no requieren autenticacion
-                "/css/**", "/js/**", "/image/**", "/error/**", "/images/**").permitAll()
+                "/css/**", "/js/**", "/image/**", "/error/**", "/images/**", "/imagenes/**", "/docs/**").permitAll()
                 // Las URL publicas no requieren autenticacion
                 .antMatchers("/", "/signup", "/encriptar/**").permitAll()
 
@@ -46,6 +46,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/category/**").hasAnyAuthority("ROL_ADMINISTRADOR")
                 .antMatchers("/requests/**").hasAnyAuthority("ROL_ENLACE")
                 .antMatchers("/suburb/**").hasAnyAuthority("ROL_ENLACE")
+                .antMatchers("/president/**").hasAnyAuthority("ROL_PRESIDENTE")
                 //.antMatchers("/usuarios/**").hasAnyAuthority("ROL_ADMINISTRADOR")
 
                 // Las demas URL requieren autenticacion
