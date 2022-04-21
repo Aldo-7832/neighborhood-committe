@@ -24,7 +24,7 @@ public class CommentaryAttachments implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "commentary", nullable = false)
-    private Commentary commentary;
+    private CommentaryObject commentary;
 
     public Long getId() {
         return id;
@@ -42,11 +42,11 @@ public class CommentaryAttachments implements Serializable {
         this.name = name;
     }
 
-    public Commentary getCommentary() {
+    public CommentaryObject getCommentary() {
         return commentary;
     }
 
-    public void setCommentary(Commentary commentary) {
+    public void setCommentary(CommentaryObject commentary) {
         this.commentary = commentary;
     }
 

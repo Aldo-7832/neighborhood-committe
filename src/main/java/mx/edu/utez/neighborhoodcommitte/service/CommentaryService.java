@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.edu.utez.neighborhoodcommitte.entity.Commentary;
+import mx.edu.utez.neighborhoodcommitte.entity.CommentaryObject;
 import mx.edu.utez.neighborhoodcommitte.repository.ICommentaryRepository;
 
 @Service
@@ -14,17 +14,21 @@ public class CommentaryService {
     @Autowired
     private ICommentaryRepository commentaryRepository;
 
-    public List<Commentary> findAll() {
+    public List<CommentaryObject> findAll() {
         return commentaryRepository.findAll();
     }
 
-    public Commentary findById(long id) {
+    public List<CommentaryObject> findAllByRequestId(long id) {
+        return commentaryRepository.findAllByRequestId(id);
+    }
+
+    public CommentaryObject findById(long id) {
         return commentaryRepository.findById(id);
     }
 
-    public boolean save(Commentary obj) {
+    public boolean save(CommentaryObject obj) {
         boolean flag = false;
-        Commentary tmp = commentaryRepository.save(obj);
+        CommentaryObject tmp = commentaryRepository.save(obj);
         if (!tmp.equals(null)) {
             flag = true;
         }
@@ -33,7 +37,7 @@ public class CommentaryService {
 
     public boolean delete(long id) {
         boolean flag = false;
-        Commentary tmp = commentaryRepository.findById(id);
+        CommentaryObject tmp = commentaryRepository.findById(id);
         if (!tmp.equals(null)) {
             commentaryRepository.delete(tmp);
             flag = true;

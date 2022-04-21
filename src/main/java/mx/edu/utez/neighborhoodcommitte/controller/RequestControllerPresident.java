@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import mx.edu.utez.neighborhoodcommitte.entity.CommentaryObject;
 import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import mx.edu.utez.neighborhoodcommitte.entity.RequestAttachments;
+import mx.edu.utez.neighborhoodcommitte.entity.Roles;
 import mx.edu.utez.neighborhoodcommitte.entity.Users;
 import mx.edu.utez.neighborhoodcommitte.entity.dto.RequestDto;
 import mx.edu.utez.neighborhoodcommitte.service.CategoryService;
+import mx.edu.utez.neighborhoodcommitte.service.CommentaryService;
 import mx.edu.utez.neighborhoodcommitte.service.RequestAttachmentsService;
 import mx.edu.utez.neighborhoodcommitte.service.RequestService;
 import mx.edu.utez.neighborhoodcommitte.service.UsersService;
@@ -45,8 +48,12 @@ public class RequestControllerPresident {
     @Autowired
     private RequestAttachmentsService attachmentsService;
 
+    @Autowired
+    private CommentaryService commentaryService;
+
     @RequestMapping(value = "/list/unpaid", method = RequestMethod.GET)
-    public String listAllPresidentUnpaidRequests(Authentication authentication, HttpSession session, Model model, RedirectAttributes redirectAttributes) {
+    public String listAllPresidentUnpaidRequests(Authentication authentication, HttpSession session, Model model,
+            RedirectAttributes redirectAttributes) {
         Users user = usersService.findByUsername(authentication.getName());
         user.setPassword(null);
         session.setAttribute("user", user);
@@ -55,9 +62,10 @@ public class RequestControllerPresident {
     }
 
     @RequestMapping(value = "/pay/{id}/{status}", method = RequestMethod.GET)
-    public ResponseEntity<Object> payRequest(@PathVariable("id") long id, @PathVariable("status") String status, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<Object> payRequest(@PathVariable("id") long id, @PathVariable("status") String status,
+            RedirectAttributes redirectAttributes) {
         Map<String, Object> data = new HashMap<>();
-        if(status.equals("COMPLETED")) {
+        if (status.equals("COMPLETED")) {
             Request tmp = requestService.findById(id);
             if (!tmp.equals(null)) {
                 tmp.setPaymentStatus(2);
@@ -78,8 +86,9 @@ public class RequestControllerPresident {
     }
 
     @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
-    public String showRequestDetails(@PathVariable("id") long id, Authentication authentication, HttpSession session, Model model,
-    RedirectAttributes redirectAttributes) {
+    public String showRequestDetails(@PathVariable("id") long id, Authentication authentication, HttpSession session,
+            Model model,
+            RedirectAttributes redirectAttributes) {
         Users user = usersService.findByUsername(authentication.getName());
         user.setPassword(null);
         session.setAttribute("user", user);
@@ -134,10 +143,12 @@ public class RequestControllerPresident {
                     attachments.setRequest(obj);
                     boolean res2 = attachmentsService.save(attachments);
                     if (res2) {
-                        redirectAttributes.addFlashAttribute("msg_success", "¡Se registró la solicitud con la evidencia!");
+                        redirectAttributes.addFlashAttribute("msg_success",
+                                "¡Se registró la solicitud con la evidencia!");
                         return "redirect:/president/list";
                     } else {
-                        redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al registrar la solicitud con la evidencia");
+                        redirectAttributes.addFlashAttribute("msg_error",
+                                "Ocurrió un error al registrar la solicitud con la evidencia");
                         return "redirect:/president/create";
                     }
                 } else {
@@ -152,5 +163,41 @@ public class RequestControllerPresident {
         redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un fallo");
         return "redirect:/president/create";
     }
-    
+
+    @RequestMapping(value = "/commentary/{id}", method = RequestMethod.GET)
+    public String chat(@PathVariable("id") long id, Authentication authentication, HttpSession session, Model model,
+            RedirectAttributes redirectAttributes, CommentaryObject commentaryObject) {
+        Users user = usersService.findByUsername(authentication.getName());
+        user.setPassword(null);
+        session.setAttribute("user", user);
+        model.addAttribute("listComents", commentaryService.findAllByRequestId(id));
+        model.addAttribute("request", requestService.findById(id));
+        return "requests/president/comments";
+    }
+
+    @RequestMapping(value = "/commentary/save/{id}", method = RequestMethod.POST)
+    public String saveCommentary(Model model, CommentaryObject commentaryObject, Authentication authentication,
+            HttpSession session, @PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+        Users user = usersService.findByUsername(authentication.getName());
+        user.setPassword(null);
+        session.setAttribute("user", user);
+        commentaryObject.setRequest(requestService.findById(id));
+        Users tmp = usersService.findById(user.getId());
+        tmp.setPassword(usersService.findPasswordById(tmp.getId()));
+        Roles tmpRole = (Roles) tmp.getRoles().toArray()[0];
+        System.out.println(tmpRole.getAuthority());
+        if (tmpRole.getAuthority().equals("ROL_PRESIDENTE")) {
+            commentaryObject.setAutor("Presidente");
+        } else {
+            commentaryObject.setAutor("Enlace");
+        }
+        boolean res = commentaryService.save(commentaryObject);
+        if (res) {
+            redirectAttributes.addFlashAttribute("msg_success", "Comentario publicado");
+        } else {
+            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al publicar el comentario");
+        }
+        return ("redirect:/president/commentary/" + id);
+    }
+
 }

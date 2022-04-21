@@ -1,10 +1,18 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
+import mx.edu.utez.neighborhoodcommitte.entity.CommentaryObject;
 import mx.edu.utez.neighborhoodcommitte.entity.Request;
+import mx.edu.utez.neighborhoodcommitte.entity.Roles;
+import mx.edu.utez.neighborhoodcommitte.entity.Users;
+import mx.edu.utez.neighborhoodcommitte.service.CommentaryService;
+import mx.edu.utez.neighborhoodcommitte.service.RequestAttachmentsService;
 import mx.edu.utez.neighborhoodcommitte.service.RequestService;
+import mx.edu.utez.neighborhoodcommitte.service.UsersService;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +21,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping(value = "/request")
 public class RequestController {
+
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private UsersService usersService;
+
+    @Autowired
+    private CommentaryService commentaryService;
+
+    @Autowired
+    RequestAttachmentsService attachmentsService;
 
     @RequestMapping(value = "/amount/{id}", method = RequestMethod.GET)
     public String amount(Model model, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
@@ -22,24 +40,39 @@ public class RequestController {
         if (!request.equals(null)) {
             model.addAttribute("request", requestService.findById(id));
             model.addAttribute("listRequests", requestService.findAll());
-            return "requests/detailsRequests";
-        } else {
-            redirectAttributes.addFlashAttribute("msg_error", "Registro No Encontrado");
-            return "redirect:/requests/listRequests";
-        }
-    }
-
-    @RequestMapping(value = "/detalles/{id}", method = RequestMethod.GET)
-    public String detalles(Model model, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        Request request = requestService.findById(id);
-        if (request != null) {
-            model.addAttribute("request", requestService.findById(id));
             return "requests/amountRequests";
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "Registro No Encontrado");
-            return "redirect:/requests/listRequests";
+            return "redirect:/request/list";
         }
     }
+
+    @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
+    public String details(Model model, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        if (!requestService.findById(id).equals(null)) {
+            model.addAttribute("request", requestService.findById(id));
+            model.addAttribute("attachment", attachmentsService.findByRequestId(id));
+            return "/requests/detailsRequests";
+        } else {
+            redirectAttributes.addFlashAttribute("msg_error", "La solicitud que buscas no existe");
+            return "redirect:/request/list";
+        }
+    }
+
+    /*
+     * @RequestMapping(value = "/detalles/{id}", method = RequestMethod.GET)
+     * public String detalles(Model model, @PathVariable("id") Long id,
+     * RedirectAttributes redirectAttributes) {
+     * Request request = requestService.findById(id);
+     * if (request != null) {
+     * model.addAttribute("request", requestService.findById(id));
+     * return "requests/detailsRequests";
+     * } else {
+     * redirectAttributes.addFlashAttribute("msg_error", "Registro No Encontrado");
+     * return "redirect:/request/list";
+     * }
+     * }
+     */
 
     @PostMapping(value = "/update")
     public String actualizar(@ModelAttribute("request") Request request, Model modelo,
@@ -98,6 +131,42 @@ public class RequestController {
             redirectAttributes.addFlashAttribute("msg_error", msgError);
             return "redirect:/requests/amountRequests";
         }
+    }
+
+    @RequestMapping(value = "/commentary/{id}", method = RequestMethod.GET)
+    public String chat(@PathVariable("id") long id, Authentication authentication, HttpSession session, Model model,
+            RedirectAttributes redirectAttributes, CommentaryObject commentaryObject) {
+        Users user = usersService.findByUsername(authentication.getName());
+        user.setPassword(null);
+        session.setAttribute("user", user);
+        model.addAttribute("listComents", commentaryService.findAllByRequestId(id));
+        model.addAttribute("request", requestService.findById(id));
+        return "requests/comments";
+    }
+
+    @RequestMapping(value = "/commentary/save/{id}", method = RequestMethod.POST)
+    public String saveCommentary(Model model, CommentaryObject commentaryObject, Authentication authentication,
+            HttpSession session, @PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+        Users user = usersService.findByUsername(authentication.getName());
+        user.setPassword(null);
+        session.setAttribute("user", user);
+        commentaryObject.setRequest(requestService.findById(id));
+        Users tmp = usersService.findById(user.getId());
+        tmp.setPassword(usersService.findPasswordById(tmp.getId()));
+        Roles tmpRole = (Roles) tmp.getRoles().toArray()[0];
+        System.out.println(tmpRole.getAuthority());
+        if (tmpRole.getAuthority().equals("ROL_PRESIDENTE")) {
+            commentaryObject.setAutor("Presidente");
+        } else {
+            commentaryObject.setAutor("Enlace");
+        }
+        boolean res = commentaryService.save(commentaryObject);
+        if (res) {
+            redirectAttributes.addFlashAttribute("msg_success", "Comentario publicado");
+        } else {
+            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al publicar el comentario");
+        }
+        return ("redirect:/request/commentary/" + id);
     }
 
 }

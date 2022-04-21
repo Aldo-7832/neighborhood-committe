@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "commentary")
-public class Commentary implements Serializable {
+public class CommentaryObject implements Serializable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,17 @@ public class Commentary implements Serializable {
     @OneToOne
     @JoinColumn(name = "request", nullable = false)
     private Request request;
+
+    @Column(name = "autor", nullable = false, length = 100)
+    private String autor;
+
+    public String getAutor() {
+        return autor;
+    }
+
+    public void setAutor(String autor) {
+        this.autor = autor;
+    }
 
     public Long getId() {
         return id;

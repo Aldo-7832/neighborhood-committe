@@ -50,7 +50,6 @@
                                 <tr th:each="tmpRequest : ${requestList}">
                                     <td th:text="${tmpRequest.category.name}"></td>
                                     <td>
-                                        <!--<p th:utext="${tmpRequest.description}"></p>-->
                                         <p
                                             th:utext="${tmpRequest.description.length > 10 ? (tmpRequest.description.substring(0, 13) + '...') : tmpRequest.description}">
                                         </p>
@@ -84,9 +83,15 @@
                                     <td>
                                         <div class="text-end">
                                             <a th:href="@{/president/details/{id} (id=${tmpRequest.id})}"
-                                                class="btn btn-warning mb-3" >
+                                                class="btn btn-warning mb-3">
                                                 <ion-icon name="book"></ion-icon>&nbsp;<span
                                                     class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Detalles</span>
+                                            </a>
+                                            <a th:href="@{/president/commentary/{id} (id=${tmpRequest.id})}"
+                                                class="btn btn-info mb-3">
+                                                <ion-icon name="chatbubbles"></ion-icon>&nbsp;<span
+                                                    class="d-sm-none d-md-none d-lg-inline d-xl-inline">
+                                                    Comentarios</span>
                                             </a>
                                         </div>
                                     </td>
