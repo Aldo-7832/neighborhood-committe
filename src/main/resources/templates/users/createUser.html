@@ -43,24 +43,24 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Nombre</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{name}" placeholder="Nombre(s)"/>
+                    <input class="form-control form-control-lg" type="text" th:field="*{name}" placeholder="Nombre(s)" maxlength="150"/>
                     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
                 <div class="form-group col-md-8">
                     <label>Primer Apellido</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{lastName}" placeholder="Primer Apellido"/>
+                    <input class="form-control form-control-lg" type="text" th:field="*{lastName}" placeholder="Primer Apellido" maxlength="150"/>
                     <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Segundo apellido</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{surname}" placeholder="Segundo Apellido"/>
+                    <input class="form-control form-control-lg" type="text" th:field="*{surname}" placeholder="Segundo Apellido" maxlength="150"/>
                     <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
                 <div class="form-group col-md-8">
                   <label>Telefono</label>
-                  <input class="form-control form-control-lg" type="text" th:field="*{phone}" placeholder="TelÃ©fono"/>
+                  <input class="form-control form-control-lg" type="text" th:field="*{phone}" placeholder="TelÃ©fono" maxlength="20"/>
                   <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger mb-3 mt-3"></div>
               </div>
               </div>
@@ -79,7 +79,7 @@
                     </label>&nbsp;&nbsp;&nbsp;
                     <label>
                       <input type="radio" name="tipoUsuario" value="opcionPresidente">
-                      Presidente de Comité
+                      Presidente de Comitï¿½
                     </label>
                   </div>
                 </div>
@@ -93,19 +93,19 @@
               <div class="form-row">
                 <div class="form-group col-md-4">
                     <label>Correo electronico</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{email}" placeholder="Correo Electrónico"/>
+                    <input class="form-control form-control-lg" type="email" th:field="*{email}" placeholder="Correo Electrï¿½nico" maxlength="150"/>
                     <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
                 <div class="form-group col-md-8">
                   <label>Nombre de Usuario</label>
-                  <input class="form-control form-control-lg" type="text" th:field="*{username}" placeholder="Nombre de Usuario"/>
+                  <input class="form-control form-control-lg" type="text" th:field="*{username}" placeholder="Nombre de Usuario" maxlength="150"/>
                   <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-4">
-                  <label>Contraseña</label>
-                  <input class="form-control form-control-lg" type="password" th:field="*{password}" placeholder="Contraseña"/>
+                  <label>Contraseï¿½a</label>
+                  <input class="form-control form-control-lg" type="password" th:field="*{password}" placeholder="Contraseï¿½a" maxlength="255"/>
                   <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger mb-3 mt-3"></div>
                 </div>
               </div>

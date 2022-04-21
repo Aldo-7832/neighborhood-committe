@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -64,6 +65,7 @@ public class Users implements Serializable {
 
     @Column(name = "email", nullable = false, length = 150, unique = true)
     @NotBlank(message="El Correo electronico no puede estar vacio")
+    @Email(message="El Correo electronico no es valido")
     private String email;
 
     @Column(name = "employee_number", nullable = true, length = 100)

@@ -70,10 +70,10 @@ public class CategoryController {
     public String update(@PathVariable long id, Model modelo, RedirectAttributes redirectAttributes) {
         Category request = requestCategoryService.findOne(id);
         if (request != null) {
-            modelo.addAttribute("requestsCategory", request);
-            return "category/createRequests";
+            modelo.addAttribute("category", request);
+            return "category/createCategory";
         }else{
-            return "category/listRequests";
+            return "category/listCategory";
         }
     }
 
