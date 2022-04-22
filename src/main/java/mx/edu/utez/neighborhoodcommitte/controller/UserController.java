@@ -101,7 +101,6 @@ public class UserController {
         user.setRegisteredDate(date);
         user.setEnabled(1);
         if (!(BlacklistController.checkBlacklistedWords(user.getEmail())
-                || BlacklistController.checkBlacklistedWords(user.getEmployeeNumber())
                 || BlacklistController.checkBlacklistedWords(user.getLastName())
                 || BlacklistController.checkBlacklistedWords(user.getName())
                 || BlacklistController.checkBlacklistedWords(user.getPassword())

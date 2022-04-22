@@ -82,14 +82,14 @@ public class RequestController {
     @PostMapping(value = "/update")
     public String actualizar(@ModelAttribute("request") Request request, Model modelo,
             RedirectAttributes redirectAttributes) {
-        if (!BlacklistController.checkBlacklistedWords(request.getDescription())) {
-            Request obj = requestService.findById(request.getId());
+        Request obj = requestService.findById(request.getId());
+        if (!BlacklistController.checkBlacklistedWords(obj.getDescription())) {
             obj.setPaymentAmount(request.getPaymentAmount());
             if (obj != null) {
                 requestService.save(obj);
                 modelo.addAttribute("listRequests", requestService.findAll());
             }
-            return "requests/listRequests";
+            return "redirect:/request/list";
         } else {
             redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
             return "redirect:/request/list";

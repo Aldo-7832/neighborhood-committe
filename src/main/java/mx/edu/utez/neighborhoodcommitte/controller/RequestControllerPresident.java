@@ -133,8 +133,7 @@ public class RequestControllerPresident {
         Users tmpuser = user;
         user.setPassword(null);
         session.setAttribute("user", user);
-        if (!(BlacklistController.checkBlacklistedWords(requestDto.getAttachmentName())
-                || BlacklistController.checkBlacklistedWords(requestDto.getDescription()))) {
+        if (!BlacklistController.checkBlacklistedWords(requestDto.getDescription())) {
             Request obj = new Request();
             obj.setCategory(requestDto.getCategory());
             obj.setDescription(requestDto.getDescription());
