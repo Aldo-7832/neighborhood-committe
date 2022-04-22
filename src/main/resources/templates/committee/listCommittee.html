@@ -16,74 +16,78 @@
 </head>
 
 <body>
-    <div th:insert="~{fragments/header :: header}"></div>
-<div class="container ">
-    <div class="row justify-content-center">
-        <div class="col-5">
-            <div style="background-color: rgba(252,0,0, 0.1); border-radius: 20px">
-                <div class="col-9 ">
-                    <div class="container " style="align-content: center">
-                        <img src="https://grupohidraulico.com.mx/wp-content/uploads/2019/04/drenaje.jpg"
-                             class="img-fluid rounded  " alt="..." >
-                    </div><br>
-                    <div class="col-12"  th:each="tmpCommittee : ${committee}">
-                        <h2 class="mb-3">Detalles</h2>
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container">
+    <div class="card">
+        <div class="col-12"  th:each="tmpCommittee : ${committee}">
+            <div class="card-header">Detalles</div>
+            <div class="card-body">
+                <div class="col d-flex justify-content-between bg-white border-bottom mb-2">
+                    <h5 class="card-title">Detalles</h5>
+                    <div class="text-end mb-3">
+                        <b>Estatus: </b>
+                        <div th:switch="${committee.status}">
+                            <div th:case="'0'">
+                                <span class="badge badge-pill badge-danger">Inactivo</span>
+                            </div>
+                            <div th:case="'1'">
+                                <span class="badge badge-pill badge-success">Activo</span>
+                            </div>
 
-                        <strong>
-                            Estado:
-                            <small th:text="${tmpCommittee.suburb.city.state.name}" class="text-muted"></small>
-                        </strong><br><br>
-                        <strong>
-                            Ciudad:
-                            <small th:text="${tmpCommittee.suburb.city.name}" class="text-muted"></small>
-                        </strong><br><br>
-                        <strong>
-                            Suburbio:
-                            <small th:text="${tmpCommittee.suburb.name}" class="text-muted"></small>
-                        </strong><br><br>
-                        <strong>
-                            Estado del comité:
-                            <small th:switch="${committee.status}" class="text-muted badge badge-pill ">
-                                <div th:case="'1'">
-                                    <small class="text-muted"><span
-                                            class="badge badge-pill badge-success">Activo</span></small>
-                                </div>
-                                <div th:case="'0'">
-                                    <small class="text-muted"><span
-                                            class="badge badge-pill badge-danger">Inactivo</span></small>
-                                </div>
-                            </small>
-                        </strong><br><br>
-
-
+                        </div>
                     </div>
                 </div>
+                <div class="col-12 border-bottom mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="mb-3">Localidad</h4>
+                        </div>
+                        <div class="col-4">
+                            <b>Estado: </b>
+                            <p th:text="${tmpCommittee.suburb.city.state.name}"></p>
+                        </div>
+                        <div class="col-4">
+                            <b>Municipio: </b>
+                            <p th:text="${tmpCommittee.suburb.city.name}"></p>
+                        </div>
+                        <div class="col-4">
+                            <b>Colonia: </b>
+                            <p th:text="${tmpCommittee.suburb.name}"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer">
+                <a th:href="@{/committee/list}" class="btn btn-primary btn-block">
+                    <ion-icon name="checkmark"></ion-icon>&nbsp;<span
+                        class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Volver</span>
+                </a>
             </div>
         </div>
     </div>
-</div>
-<script
-        type="module"
-        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-></script>
-<script
-        nomodule
-        src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-></script>
+    <script
+            type="module"
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+            nomodule
+            src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
 
-<script th:src="@{/js/toast.min.js}"></script>
+    <script th:src="@{/js/toast.min.js}"></script>
 
-<script th:if="${msg_success != null}">
-    new Toast({
-        message: "[[${msg_success}]]",
-        type: "success",
-    });
-</script>
-<script th:if="${msg_error != null}">
-    new Toast({
-        message: "[[${msg_error}]]",
-        type: "danger",
-    });
-</script>
+    <script th:if="${msg_success != null}">
+        new Toast({
+            message: "[[${msg_success}]]",
+            type: "success",
+        });
+    </script>
+    <script th:if="${msg_error != null}">
+        new Toast({
+            message: "[[${msg_error}]]",
+            type: "danger",
+        });
+    </script>
 </body>
 </html>
