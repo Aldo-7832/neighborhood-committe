@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="header">
+<nav class="navbar navbar-expand-lg navbar-dark mb-4" th:fragment="header" style="background-color: #4682B4;">
   <div class="container-fluid">
     <a class="navbar-brand" th:href="@{/}">COMVE</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -40,10 +40,10 @@
       </ul>
     </div>
     <div class="text-end" sec:authorize="isAuthenticated()">
-      <a class="nav-link text-danger" th:href="@{/logout}">Salir</a>
+      <a class="nav-link " th:href="@{/logout}" style="background-color: white">Salir</a>
     </div>
     <div class="text-end" sec:authorize="isAnonymous()">
-      <a class="nav-link" th:href="@{/login}">Iniciar Sesión</a>
+      <a class="nav-link navbar navbar-expand-lg navbar-light bg-light" th:href="@{/login}">Iniciar Sesión</a>
     </div>
   </div>
 </nav>
