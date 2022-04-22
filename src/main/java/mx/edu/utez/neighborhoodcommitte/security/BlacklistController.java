@@ -2,7 +2,7 @@ package mx.edu.utez.neighborhoodcommitte.security;
 
 public class BlacklistController {
     
-    private static String[] blacklist = {"<",">","SCRIPT","SELECT", "FROM","DELETE","INSERT","UPDATE","WHERE","=","&","+","-","AND","OR","/SCRIPT","HREF","SRC","TH:","%","*","/"};
+    private static String[] blacklist = {"<SCRIPT","SELECT", "FROM","DELETE","INSERT","UPDATE","WHERE","=","&","+","-","AND","OR","/SCRIPT>","HREF","SRC","TH:","%","*","/","DISTINCT","CONST","DROP","EXECUTE","`","'","\""};
 
     public static boolean checkBlacklistedWords(String word) {
         for (int i = 0; i < blacklist.length; i++) {
