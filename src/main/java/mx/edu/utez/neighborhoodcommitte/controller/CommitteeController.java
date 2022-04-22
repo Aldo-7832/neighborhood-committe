@@ -1,9 +1,14 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
+import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import mx.edu.utez.neighborhoodcommitte.service.CityService;
 import mx.edu.utez.neighborhoodcommitte.service.StateService;
 import mx.edu.utez.neighborhoodcommitte.service.SuburbService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +33,9 @@ public class CommitteeController {
     private StateService stateService;
 
     @GetMapping(value = "/list")
-    public String findAll(Model model) {
-        model.addAttribute("listCommittees", committeeService.findAll());
+    public String findAll(Model model, Pageable pageable) {
+        Page<Committee> listCommittees = committeeService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("id").ascending()));
+        model.addAttribute("listCommittees", listCommittees);
         return "committee/listAllCommittees";
     }
 

@@ -1,6 +1,11 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
+import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,8 +30,9 @@ public class CityController {
     private StateService stateService;
 
     @GetMapping(value = "/list")
-    public String findAll(Model model) {
-        model.addAttribute("listCities", cityService.findAll());
+    public String findAll(Model model, Pageable pageable) {
+        Page<City> listCities = cityService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 110, Sort.by("name").ascending()));
+        model.addAttribute("listCities", listCities);
         model.addAttribute("listStates", stateService.findAll());
         return "city/listCities";
     }

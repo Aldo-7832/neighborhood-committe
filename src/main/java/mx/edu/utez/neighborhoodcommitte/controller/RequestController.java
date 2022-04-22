@@ -12,11 +12,17 @@ import mx.edu.utez.neighborhoodcommitte.service.UsersService;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
 
 @Controller
 @RequestMapping(value = "/request")
@@ -88,8 +94,9 @@ public class RequestController {
     }
 
     @GetMapping(value = "/list")
-    public String findAll(Model model) {
-        model.addAttribute("listRequests", requestService.findAll());
+    public String findAll(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
+        Page<Request> listRequests = requestService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 2, Sort.by("startDate").descending()));
+        model.addAttribute("listRequests", listRequests);
         return "requests/listRequests";
     }
 

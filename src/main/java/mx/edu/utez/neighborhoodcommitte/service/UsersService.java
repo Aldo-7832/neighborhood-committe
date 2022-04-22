@@ -2,7 +2,10 @@ package mx.edu.utez.neighborhoodcommitte.service;
 
 import java.util.List;
 
+import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Users;
@@ -20,6 +23,10 @@ public class UsersService {
 
     public Users findById(long id) {
         return usersRepository.findById(id);
+    }
+
+    public Page<Users> listarPaginacion(PageRequest page) {
+        return usersRepository.findAll((org.springframework.data.domain.Pageable) page);
     }
 
     public String findPasswordById(long id) {

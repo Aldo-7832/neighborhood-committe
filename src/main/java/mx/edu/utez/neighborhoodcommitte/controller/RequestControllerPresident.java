@@ -7,6 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -99,11 +103,13 @@ public class RequestControllerPresident {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String listAllPresidentRequests(Authentication authentication, HttpSession session, Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes, Pageable pageable) {
         Users user = usersService.findByUsername(authentication.getName());
         user.setPassword(null);
         session.setAttribute("user", user);
+        Page<Request> listRequests = requestService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 2, Sort.by("startDate").descending()));
         model.addAttribute("requestList", requestService.findAllByCommitteeId(user.getCommittee().getId()));
+        model.addAttribute("requestList2", listRequests);
         return "requests/president/list";
     }
 

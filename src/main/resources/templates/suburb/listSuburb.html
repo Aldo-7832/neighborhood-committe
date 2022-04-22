@@ -60,22 +60,33 @@
                             <td>[[${suburb.postalCode}]]</td>
                             <td>[[${suburb.city.name}]]</td>
                             <td class="text-end">
-                                <div class="col-lg-6 mb-3 float-right">
+                                <div class="col-lg-12 mb-3 float-right">
                                     <a class="btn btn-primary" th:href="@{/suburb/update/{id} (id=${suburb.id})}">
                                         <ion-icon name="create-outline"></ion-icon><span
                                             class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Actualizar</span>
-                                    </a>
-                                </div>
-                                <div class="col-lg-6 mb-3 float-left">
-                                    <a class="btn btn-danger" th:href="@{/suburb/delete/{id} (id=${suburb.id})}">
-                                        <ion-icon name="trash-outline"></ion-icon><span
-                                            class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Eliminar</span>
                                     </a>
                                 </div>
                             </td>
                         </tr>
                         </tbody>
                     </table>
+                    <nav th:if="${listSuburbs.totalPages > 0}" aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:classappend="${listSuburbs.number == 0 ? 'disabled' : ''}">
+                                <a th:href="@{/suburb/list(page=${listSuburbs.number - 1})}" class="page-link">Anterior</a>
+                            </li>
+
+                            <li class="page-item" th:classappend="${i eq listSuburbs.number + 1} ? 'active'"
+                                th:each="i : ${#numbers.sequence( 1, listSuburbs.totalPages, 1)}">
+                                <a class="page-link" th:href="@{/suburb/list?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}"
+                                   th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                            </li>
+                            <li class="page-item"
+                                th:classappend="${listSuburbs.number == (listSuburbs.totalPages - 1) ? 'disabled' : ''}">
+                                <a th:href="@{/suburb/list(page=${listSuburbs.number + 1})}" class="page-link">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>

@@ -1,8 +1,12 @@
 package mx.edu.utez.neighborhoodcommitte.service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Request;
@@ -26,6 +30,9 @@ public class RequestService {
         return requestRepository.findAllUnpaidByCommitteeId(id);
     }
 
+    public Page<Request> listarPaginacion(PageRequest page) {
+        return requestRepository.findAll((org.springframework.data.domain.Pageable) page);
+    }
 
     public Request findById(long id) {
 
@@ -51,5 +58,8 @@ public class RequestService {
         }
         return flag;
     }
-    
+
+    public Page<Request> listarPaginacion(Pageable ofSize, int i, Sort startDate) {
+        return requestRepository.findAll((org.springframework.data.domain.Pageable) ofSize);
+    }
 }

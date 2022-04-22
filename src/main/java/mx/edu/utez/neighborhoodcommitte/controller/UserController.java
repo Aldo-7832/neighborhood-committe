@@ -4,7 +4,12 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
+import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,8 +44,9 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping(value = "/list")
-    public String findAll(Model model) {
-        model.addAttribute("listUsers", userService.findAll());
+    public String findAll(Model model, Pageable pageable) {
+        Page<Users> listUsers = userService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("name").ascending()));
+        model.addAttribute("listUsers", listUsers);
         return "users/listUser";
     }
 

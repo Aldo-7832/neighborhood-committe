@@ -2,7 +2,10 @@ package mx.edu.utez.neighborhoodcommitte.service;
 
 import java.util.List;
 
+import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Category;
@@ -20,6 +23,10 @@ public class CategoryService {
 
     public Category findOne(long id) {
         return categoryRepository.getById(id);
+    }
+
+    public Page<Category> listarPaginacion(PageRequest page) {
+        return categoryRepository.findAll((org.springframework.data.domain.Pageable) page);
     }
 
     public boolean save(Category obj) {

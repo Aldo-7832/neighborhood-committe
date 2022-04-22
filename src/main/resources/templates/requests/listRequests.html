@@ -77,7 +77,7 @@
                                     <td th:text="${tmpRequest.paymentAmount}"></td>
                                     <td>
                                         <div class="text-end">
-                                            <a th:href="@{/request/detalles/{id} (id=${tmpRequest.id})}"
+                                            <a th:href="@{/request/details/{id} (id=${tmpRequest.id})}"
                                                 class="btn btn-warning mb-3" data-bs-toggle="modal"
                                                 data-bs-target="#detailsPayment">
                                                 <ion-icon name="book"></ion-icon>&nbsp;<span
@@ -105,6 +105,23 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <nav th:if="${listRequests.totalPages > 0}" aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${listRequests.number == 0 ? 'disabled' : ''}">
+                                    <a th:href="@{/request/list(page=${listRequests.number - 1})}" class="page-link">Anterior</a>
+                                </li>
+
+                                <li class="page-item" th:classappend="${i eq listRequests.number + 1} ? 'active'"
+                                    th:each="i : ${#numbers.sequence( 1, listRequests.totalPages, 1)}">
+                                    <a class="page-link" th:href="@{/request/list?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}"
+                                       th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                                </li>
+                                <li class="page-item"
+                                    th:classappend="${listRequests.number == (listRequests.totalPages - 1) ? 'disabled' : ''}">
+                                    <a th:href="@{/request/list(page=${listRequests.number + 1})}" class="page-link">Siguiente</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
