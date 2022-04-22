@@ -38,7 +38,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // Los recursos estaticos no requieren autenticacion
                 "/css/**", "/js/**", "/image/**", "/error/**", "/images/**", "/imagenes/**", "/docs/**").permitAll()
                 // Las URL publicas no requieren autenticacion
-                .antMatchers("/", "/signup", "/encriptar/**").permitAll()
+                .antMatchers("/", "/signup", "/encriptar/**", "/reset/password/**").permitAll()
 
                 // Asignar permisos a las URL de acuerdo a los roles
                 .antMatchers("/city/**").hasAnyAuthority("ROL_ADMINISTRADOR")

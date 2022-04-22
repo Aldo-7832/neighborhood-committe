@@ -50,6 +50,11 @@ public class HomeController {
 		return "administrador/dashboard";
 	}
 
+	@GetMapping("/forgot-password")
+	public String resetPassword() {
+		return "forgotPassword";
+	}
+
 	@GetMapping("/enlace/dashboard")
 	public String dashboardEnlace(Authentication authentication, HttpSession session) {
 		if (session.getAttribute("user") == null) {
