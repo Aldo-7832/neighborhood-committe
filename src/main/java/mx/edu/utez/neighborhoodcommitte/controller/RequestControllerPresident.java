@@ -122,6 +122,7 @@ public class RequestControllerPresident {
             RedirectAttributes redirectAttributes, RequestDto requestDto,
             @RequestParam("attachment") MultipartFile multipartFile) {
         Users user = usersService.findByUsername(authentication.getName());
+        Users tmpuser = user;
         user.setPassword(null);
         session.setAttribute("user", user);
         Request obj = new Request();
@@ -130,8 +131,8 @@ public class RequestControllerPresident {
         obj.setStartDate(new Date());
         obj.setStatus(2);
         obj.setPaymentStatus(1);
-        obj.setUser(usersService.findById(user.getId()));
-        obj.getUser().setPassword(usersService.findPasswordById(user.getId()));
+        obj.setUser(tmpuser);
+        obj.getUser().setPassword(usersService.findPasswordById(tmpuser.getId()));
         boolean res1 = requestService.save(obj);
         if (res1) {
             if (!multipartFile.isEmpty()) {
