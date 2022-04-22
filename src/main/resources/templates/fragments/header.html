@@ -1,24 +1,42 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="header-admin">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="header">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">COMVE</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand" th:href="@{/}">COMVE</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
+        <!--INICIO ADMIN-->
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/city/list}">Municipios</a>
+          <a class="nav-link" th:href="@{/city/list}" sec:authorize="hasAnyAuthority('ROL_ADMINISTRADOR')">Municipios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/category/list}">Servicios Publicos</a>
+          <a class="nav-link" th:href="@{/category/list}" sec:authorize="hasAnyAuthority('ROL_ADMINISTRADOR')">Servicios Publicos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" th:href="@{/users/list}">Usuarios</a>
+          <a class="nav-link" th:href="@{/users/list}" sec:authorize="hasAnyAuthority('ROL_ADMINISTRADOR')">Usuarios</a>
+        </li>
+        <!--FIN ADMIN-->
+        <!--INICIO PRESIDENTE-->
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/president/list}" sec:authorize="hasAnyAuthority('ROL_PRESIDENTE')">Inicidencias</a>
         </li>
         <li class="nav-item">
-          
-          
+          <a class="nav-link" th:href="@{/president/list/unpaid}" sec:authorize="hasAnyAuthority('ROL_PRESIDENTE')">Pagos</a>
         </li>
+        <!--FIN PRESIDENTE-->
+        <!--INICIO ENLACE-->
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/request/list}" sec:authorize="hasAnyAuthority('ROL_ENLACE')">Solicitudes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/suburb/list}" sec:authorize="hasAnyAuthority('ROL_ENLACE')">Colonias</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/committee/list}" sec:authorize="hasAnyAuthority('ROL_ENLACE')">Comites</a>
+        </li>
+        <!--FIN ENLACE-->
       </ul>
     </div>
     <div class="text-end" sec:authorize="isAuthenticated()">
@@ -29,51 +47,3 @@
     </div>
   </div>
 </nav>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="header-committeeLink">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">COMVE</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/request/list}">Solicitudes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/suburb/list}">Colonias</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/committee/list}">Comites</a>
-          </li>
-        </ul>
-      </div>
-      <div class="text-end" sec:authorize="isAuthenticated()">
-        <a class="nav-link text-danger" th:href="@{/logout}">Salir</a>
-      </div>
-    </div>
-</nav>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" th:fragment="header-committeePresident">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">COMVE</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/president/list}">Inicidencias</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" th:href="@{/president/list/unpaid}">Pagos</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-danger" href="#">Salir</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-</nav>
-
