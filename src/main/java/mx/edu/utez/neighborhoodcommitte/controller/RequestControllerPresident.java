@@ -197,6 +197,7 @@ public class RequestControllerPresident {
         } else {
             commentaryObject.setAutor("Enlace");
         }
+        commentaryObject.setId(null);
         boolean res = commentaryService.save(commentaryObject);
         if (res) {
             redirectAttributes.addFlashAttribute("msg_success", "Comentario publicado");

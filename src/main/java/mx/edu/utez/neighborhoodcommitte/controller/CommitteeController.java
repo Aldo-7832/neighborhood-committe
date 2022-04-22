@@ -1,6 +1,5 @@
 package mx.edu.utez.neighborhoodcommitte.controller;
 
-import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import mx.edu.utez.neighborhoodcommitte.service.CityService;
 import mx.edu.utez.neighborhoodcommitte.service.StateService;
 import mx.edu.utez.neighborhoodcommitte.service.SuburbService;
