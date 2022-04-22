@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Category;
+import mx.edu.utez.neighborhoodcommitte.security.BlacklistController;
 import mx.edu.utez.neighborhoodcommitte.service.CategoryService;
 
 @Controller
@@ -26,7 +27,8 @@ public class CategoryController {
 
     @GetMapping(value = "/list")
     public String findAll(Model model, Pageable pageable) {
-        Page<Category> listRequestsCategory = requestCategoryService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("name").ascending()));
+        Page<Category> listRequestsCategory = requestCategoryService
+                .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("name").ascending()));
         model.addAttribute("listRequestsCategory", listRequestsCategory);
         return "category/listCategory";
     }
@@ -44,29 +46,34 @@ public class CategoryController {
     }
 
     @GetMapping("/create")
-	public String crearMascota(Category request, Model modelo) {
-		return "category/createCategory";
-	}
+    public String crearMascota(Category request, Model modelo) {
+        return "category/createCategory";
+    }
 
     @PostMapping(value = "/save")
     public String save(Model model, Category category, RedirectAttributes redirectAttributes) {
         String msgOk = "";
         String msgError = "";
 
-        if(category.getId() != null){
-            msgOk = "Servicio Publico Actualizado correctamente";
-            msgError = "El Servicio Publico NO pudo ser Actualizada correctamente";
-        }else{
-            msgOk = "Servicio Publico Guardado correctamente";
-            msgError = "El Servicio Publico NO pudo ser Guardado correctamente";
-        }
+        if (!BlacklistController.checkBlacklistedWords(category.getName())) {
+            if (category.getId() != null) {
+                msgOk = "Servicio Publico Actualizado correctamente";
+                msgError = "El Servicio Publico NO pudo ser Actualizada correctamente";
+            } else {
+                msgOk = "Servicio Publico Guardado correctamente";
+                msgError = "El Servicio Publico NO pudo ser Guardado correctamente";
+            }
 
-        boolean res = requestCategoryService.save(category);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", msgOk);
-            return "redirect:/category/list";
+            boolean res = requestCategoryService.save(category);
+            if (res) {
+                redirectAttributes.addFlashAttribute("msg_success", msgOk);
+                return "redirect:/category/list";
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", msgError);
+                return "redirect:/category/create";
+            }
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", msgError);
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
             return "redirect:/category/create";
         }
     }
@@ -77,7 +84,7 @@ public class CategoryController {
         if (request != null) {
             modelo.addAttribute("category", request);
             return "category/createCategory";
-        }else{
+        } else {
             return "category/listCategory";
         }
     }
@@ -99,5 +106,5 @@ public class CategoryController {
             return "";
         }
     }
-    
+
 }

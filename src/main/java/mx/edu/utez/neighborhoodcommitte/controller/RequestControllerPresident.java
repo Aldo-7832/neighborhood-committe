@@ -29,6 +29,7 @@ import mx.edu.utez.neighborhoodcommitte.entity.RequestAttachments;
 import mx.edu.utez.neighborhoodcommitte.entity.Roles;
 import mx.edu.utez.neighborhoodcommitte.entity.Users;
 import mx.edu.utez.neighborhoodcommitte.entity.dto.RequestDto;
+import mx.edu.utez.neighborhoodcommitte.security.BlacklistController;
 import mx.edu.utez.neighborhoodcommitte.service.CategoryService;
 import mx.edu.utez.neighborhoodcommitte.service.CommentaryService;
 import mx.edu.utez.neighborhoodcommitte.service.RequestAttachmentsService;
@@ -107,7 +108,8 @@ public class RequestControllerPresident {
         Users user = usersService.findByUsername(authentication.getName());
         user.setPassword(null);
         session.setAttribute("user", user);
-        Page<Request> listRequests = requestService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 2, Sort.by("startDate").descending()));
+        Page<Request> listRequests = requestService
+                .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 2, Sort.by("startDate").descending()));
         model.addAttribute("requestList", requestService.findAllByCommitteeId(user.getCommittee().getId()));
         model.addAttribute("requestList2", listRequests);
         return "requests/president/list";
@@ -131,44 +133,50 @@ public class RequestControllerPresident {
         Users tmpuser = user;
         user.setPassword(null);
         session.setAttribute("user", user);
-        Request obj = new Request();
-        obj.setCategory(requestDto.getCategory());
-        obj.setDescription(requestDto.getDescription());
-        obj.setStartDate(new Date());
-        obj.setStatus(2);
-        obj.setPaymentStatus(1);
-        obj.setUser(tmpuser);
-        obj.getUser().setPassword(usersService.findPasswordById(tmpuser.getId()));
-        boolean res1 = requestService.save(obj);
-        if (res1) {
-            if (!multipartFile.isEmpty()) {
-                RequestAttachments attachments = new RequestAttachments();
-                String path = "C:/comve/docs";
-                String filename = ImagenUtileria.guardarImagen(multipartFile, path);
-                if (filename != null) {
-                    attachments.setName(filename.replaceAll(" ", "").replaceAll("-", "").replace("°", ""));
-                    attachments.setRequest(obj);
-                    boolean res2 = attachmentsService.save(attachments);
-                    if (res2) {
-                        redirectAttributes.addFlashAttribute("msg_success",
-                                "¡Se registró la solicitud con la evidencia!");
-                        return "redirect:/president/list";
+        if (!(BlacklistController.checkBlacklistedWords(requestDto.getAttachmentName())
+                || BlacklistController.checkBlacklistedWords(requestDto.getDescription()))) {
+            Request obj = new Request();
+            obj.setCategory(requestDto.getCategory());
+            obj.setDescription(requestDto.getDescription());
+            obj.setStartDate(new Date());
+            obj.setStatus(2);
+            obj.setPaymentStatus(1);
+            obj.setUser(tmpuser);
+            obj.getUser().setPassword(usersService.findPasswordById(tmpuser.getId()));
+            boolean res1 = requestService.save(obj);
+            if (res1) {
+                if (!multipartFile.isEmpty()) {
+                    RequestAttachments attachments = new RequestAttachments();
+                    String path = "C:/comve/docs";
+                    String filename = ImagenUtileria.guardarImagen(multipartFile, path);
+                    if (filename != null) {
+                        attachments.setName(filename.replaceAll(" ", "").replaceAll("-", "").replace("°", ""));
+                        attachments.setRequest(obj);
+                        boolean res2 = attachmentsService.save(attachments);
+                        if (res2) {
+                            redirectAttributes.addFlashAttribute("msg_success",
+                                    "¡Se registró la solicitud con la evidencia!");
+                            return "redirect:/president/list";
+                        } else {
+                            redirectAttributes.addFlashAttribute("msg_error",
+                                    "Ocurrió un error al registrar la solicitud con la evidencia");
+                            return "redirect:/president/create";
+                        }
                     } else {
-                        redirectAttributes.addFlashAttribute("msg_error",
-                                "Ocurrió un error al registrar la solicitud con la evidencia");
-                        return "redirect:/president/create";
+                        redirectAttributes.addFlashAttribute("msg_success", "¡Se registró la solicitud correctamente!");
+                        return "redirect:/president/list";
                     }
-                } else {
-                    redirectAttributes.addFlashAttribute("msg_success", "¡Se registró la solicitud correctamente!");
-                    return "redirect:/president/list";
                 }
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al registrar la solicitud");
+                return "redirect:/president/create";
             }
+            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un fallo");
+            return "redirect:/president/create";
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al registrar la solicitud");
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
             return "redirect:/president/create";
         }
-        redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un fallo");
-        return "redirect:/president/create";
     }
 
     @RequestMapping(value = "/commentary/{id}", method = RequestMethod.GET)
@@ -189,20 +197,24 @@ public class RequestControllerPresident {
         user.setPassword(null);
         session.setAttribute("user", user);
         commentaryObject.setRequest(requestService.findById(id));
-        Users tmp = usersService.findById(user.getId());
-        tmp.setPassword(usersService.findPasswordById(tmp.getId()));
-        Roles tmpRole = (Roles) tmp.getRoles().toArray()[0];
-        if (tmpRole.getAuthority().equals("ROL_PRESIDENTE")) {
-            commentaryObject.setAutor("Presidente");
+        if (!BlacklistController.checkBlacklistedWords(commentaryObject.getContent())) {
+            Users tmp = usersService.findById(user.getId());
+            tmp.setPassword(usersService.findPasswordById(tmp.getId()));
+            Roles tmpRole = (Roles) tmp.getRoles().toArray()[0];
+            if (tmpRole.getAuthority().equals("ROL_PRESIDENTE")) {
+                commentaryObject.setAutor("Presidente");
+            } else {
+                commentaryObject.setAutor("Enlace");
+            }
+            commentaryObject.setId(null);
+            boolean res = commentaryService.save(commentaryObject);
+            if (res) {
+                redirectAttributes.addFlashAttribute("msg_success", "Comentario publicado");
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al publicar el comentario");
+            }
         } else {
-            commentaryObject.setAutor("Enlace");
-        }
-        commentaryObject.setId(null);
-        boolean res = commentaryService.save(commentaryObject);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", "Comentario publicado");
-        } else {
-            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al publicar el comentario");
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
         }
         return ("redirect:/president/commentary/" + id);
     }

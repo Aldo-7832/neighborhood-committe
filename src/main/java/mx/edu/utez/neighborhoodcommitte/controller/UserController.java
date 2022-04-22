@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Roles;
 import mx.edu.utez.neighborhoodcommitte.entity.Users;
+import mx.edu.utez.neighborhoodcommitte.security.BlacklistController;
 import mx.edu.utez.neighborhoodcommitte.service.CommitteeService;
 import mx.edu.utez.neighborhoodcommitte.service.RolesService;
 import mx.edu.utez.neighborhoodcommitte.service.UsersService;
@@ -44,7 +45,8 @@ public class UserController {
 
     @GetMapping(value = "/list")
     public String findAll(Model model, Pageable pageable) {
-        Page<Users> listUsers = userService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("name").ascending()));
+        Page<Users> listUsers = userService
+                .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("name").ascending()));
         model.addAttribute("listUsers", listUsers);
         return "users/listUser";
     }
@@ -98,26 +100,38 @@ public class UserController {
         user.setProfilePicture("imagen");
         user.setRegisteredDate(date);
         user.setEnabled(1);
+        if (!(BlacklistController.checkBlacklistedWords(user.getEmail())
+                || BlacklistController.checkBlacklistedWords(user.getEmployeeNumber())
+                || BlacklistController.checkBlacklistedWords(user.getLastName())
+                || BlacklistController.checkBlacklistedWords(user.getName())
+                || BlacklistController.checkBlacklistedWords(user.getPassword())
+                || BlacklistController.checkBlacklistedWords(user.getPhone())
+                || BlacklistController.checkBlacklistedWords(user.getProfilePicture())
+                || BlacklistController.checkBlacklistedWords(user.getSurname())
+                || BlacklistController.checkBlacklistedWords(user.getUsername()))) {
+            String contrasenaPlano = user.getPassword();
+            String contrasenaEncriptada = passwordEncoder.encode(contrasenaPlano);
+            user.setPassword(contrasenaEncriptada);
 
-        String contrasenaPlano = user.getPassword();
-        String contrasenaEncriptada = passwordEncoder.encode(contrasenaPlano);
-        user.setPassword(contrasenaEncriptada);
+            Roles role = null;
+            if (tipoUsuario.equals("opcionEnlace")) {
+                role = roleService.findByAuthority("ROL_ENLACE");
+            } else if (tipoUsuario.equals("opcionPresidente")) {
+                role = roleService.findByAuthority("ROL_PRESIDENTE");
+            }
+            user.agregarRol(role);
 
-        Roles role = null;
-        if (tipoUsuario.equals("opcionEnlace")) {
-            role = roleService.findByAuthority("ROL_ENLACE");
-        } else if (tipoUsuario.equals("opcionPresidente")) {
-            role = roleService.findByAuthority("ROL_PRESIDENTE");
-        }
-        user.agregarRol(role);
-
-        boolean respuesta = userService.guardar(user);
-        if (respuesta) {
-            redirectAttributes.addFlashAttribute("msg_success",
-                    "Se Registro Exitoso. Ya Puede Iniciar Sesión el Nuevo Usuario");
-            return "redirect:/users/list";
+            boolean respuesta = userService.guardar(user);
+            if (respuesta) {
+                redirectAttributes.addFlashAttribute("msg_success",
+                        "Se Registro Exitoso. Ya Puede Iniciar Sesión el Nuevo Usuario");
+                return "redirect:/users/list";
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", "¡Registro fallido! Por favor intenta de nuevo.");
+                return "redirect:/signup";
+            }
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", "¡Registro fallido! Por favor intenta de nuevo.");
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
             return "redirect:/signup";
         }
     }

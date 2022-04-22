@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mx.edu.utez.neighborhoodcommitte.entity.City;
+import mx.edu.utez.neighborhoodcommitte.security.BlacklistController;
 import mx.edu.utez.neighborhoodcommitte.service.CityService;
 import mx.edu.utez.neighborhoodcommitte.service.StateService;
 
@@ -58,22 +59,27 @@ public class CityController {
         String msgOk = "";
         String msgError = "";
 
-        if(city.getId() != null){
-            msgOk = "Ciudad Actualizada correctamente";
-            msgError = "La ciudad NO pudo ser Actualizada correctamente";
-        }else{
-            msgOk = "Ciudad Guardada correctamente";
-            msgError = "La ciudad NO pudo ser Guardada correctamente";
-        }
-
-        boolean res = cityService.save(city);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", msgOk);
-            return "redirect:/city/list";
+        if (!BlacklistController.checkBlacklistedWords(city.getName())) {
+            if(city.getId() != null){
+                msgOk = "Ciudad Actualizada correctamente";
+                msgError = "La ciudad NO pudo ser Actualizada correctamente";
+            }else{
+                msgOk = "Ciudad Guardada correctamente";
+                msgError = "La ciudad NO pudo ser Guardada correctamente";
+            }
+    
+            boolean res = cityService.save(city);
+            if (res) {
+                redirectAttributes.addFlashAttribute("msg_success", msgOk);
+                return "redirect:/city/list";
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", msgError);
+                return "redirect:/city/create";
+            }
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", msgError);
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
             return "redirect:/city/create";
-        }
+        } 
     }
 
     @GetMapping(value = "/update/{id}")

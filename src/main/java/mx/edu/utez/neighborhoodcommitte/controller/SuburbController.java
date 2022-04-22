@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mx.edu.utez.neighborhoodcommitte.entity.Suburb;
+import mx.edu.utez.neighborhoodcommitte.security.BlacklistController;
 import mx.edu.utez.neighborhoodcommitte.service.SuburbService;
 
 @Controller
@@ -29,7 +30,8 @@ public class SuburbController {
 
     @GetMapping(value = "/list")
     public String findAll(Model model, Pageable pageable) {
-        Page<Suburb> listSuburbs = suburbService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("postalCode").descending()));
+        Page<Suburb> listSuburbs = suburbService
+                .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 4, Sort.by("postalCode").descending()));
         model.addAttribute("listSuburbs", listSuburbs);
         return "suburb/listSuburb";
     }
@@ -58,26 +60,32 @@ public class SuburbController {
         String msgOk = "";
         String msgError = "";
 
-        if(suburb.getId() != null){
-            msgOk = "Colonia Actualizada correctamente";
-            msgError = "La colonia NO pudo ser Actualizada correctamente";
-        }else{
-            msgOk = "Colonia Guardada correctamente";
-            msgError = "La colonia NO pudo ser Guardada correctamente";
-        }
+        if (!(BlacklistController.checkBlacklistedWords(suburb.getName())
+                || BlacklistController.checkBlacklistedWords(suburb.getPostalCode()))) {
+            if (suburb.getId() != null) {
+                msgOk = "Colonia Actualizada correctamente";
+                msgError = "La colonia NO pudo ser Actualizada correctamente";
+            } else {
+                msgOk = "Colonia Guardada correctamente";
+                msgError = "La colonia NO pudo ser Guardada correctamente";
+            }
 
-        boolean res = suburbService.save(suburb);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", msgOk);
-            return "redirect:/suburb/list";
+            boolean res = suburbService.save(suburb);
+            if (res) {
+                redirectAttributes.addFlashAttribute("msg_success", msgOk);
+                return "redirect:/suburb/list";
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", msgError);
+                return "redirect:/suburb/create";
+            }
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", msgError);
-            return "redirect:/suburb/createSuburb";
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
+            return "redirect:/suburb/create";
         }
     }
 
     @GetMapping(value = "/update/{id}")
-    public String update(@PathVariable long id,Model model, RedirectAttributes redirectAttributes) {
+    public String update(@PathVariable long id, Model model, RedirectAttributes redirectAttributes) {
         Suburb res = suburbService.findOne(id);
         if (res != null) {
             model.addAttribute("suburb", res);

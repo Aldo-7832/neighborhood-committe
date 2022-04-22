@@ -85,13 +85,18 @@
                                             </a>
                                         </div>
                                         <div class="text-end">
-                                            <a th:href="@{/request/amount/{id} (id=${tmpRequest.id})}"
-                                                class="btn btn-primary mb-3" data-bs-toggle="modal"
-                                                data-bs-target="#detailsPayment">
-                                                <ion-icon name="pencil"></ion-icon>&nbsp;<span
-                                                    class="d-sm-none d-md-none d-lg-inline d-xl-inline">Asignar
-                                                    monto</span>
-                                            </a>
+                                            <div th:switch="${tmpRequest.paymentAmount}">
+                                                <div th:case="null">
+                                                    <a th:href="@{/request/amount/{id} (id=${tmpRequest.id})}"
+                                                        class="btn btn-primary mb-3" data-bs-toggle="modal"
+                                                        data-bs-target="#detailsPayment">
+                                                        <ion-icon name="pencil"></ion-icon>&nbsp;<span
+                                                            class="d-sm-none d-md-none d-lg-inline d-xl-inline">Asignar
+                                                            monto</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+
                                             <a th:href="@{/request/commentary/{id} (id=${tmpRequest.id})}"
                                                 class="btn btn-info mb-3">
                                                 <ion-icon name="chatbubbles"></ion-icon>&nbsp;<span
@@ -108,17 +113,19 @@
                         <nav th:if="${listRequests.totalPages > 0}" aria-label="Page navigation example">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item" th:classappend="${listRequests.number == 0 ? 'disabled' : ''}">
-                                    <a th:href="@{/request/list(page=${listRequests.number - 1})}" class="page-link">Anterior</a>
+                                    <a th:href="@{/request/list(page=${listRequests.number - 1})}"
+                                        class="page-link">Anterior</a>
                                 </li>
 
                                 <li class="page-item" th:classappend="${i eq listRequests.number + 1} ? 'active'"
                                     th:each="i : ${#numbers.sequence( 1, listRequests.totalPages, 1)}">
-                                    <a class="page-link" th:href="@{/request/list?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}"
-                                       th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                                    <a class="page-link" th:href="@{/request/list?page={tmpPag} (tmpPag=${i-1}) }"
+                                        th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
                                 </li>
                                 <li class="page-item"
                                     th:classappend="${listRequests.number == (listRequests.totalPages - 1) ? 'disabled' : ''}">
-                                    <a th:href="@{/request/list(page=${listRequests.number + 1})}" class="page-link">Siguiente</a>
+                                    <a th:href="@{/request/list(page=${listRequests.number + 1})}"
+                                        class="page-link">Siguiente</a>
                                 </li>
                             </ul>
                         </nav>

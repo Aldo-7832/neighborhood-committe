@@ -4,6 +4,7 @@ import mx.edu.utez.neighborhoodcommitte.entity.CommentaryObject;
 import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import mx.edu.utez.neighborhoodcommitte.entity.Roles;
 import mx.edu.utez.neighborhoodcommitte.entity.Users;
+import mx.edu.utez.neighborhoodcommitte.security.BlacklistController;
 import mx.edu.utez.neighborhoodcommitte.service.CommentaryService;
 import mx.edu.utez.neighborhoodcommitte.service.RequestAttachmentsService;
 import mx.edu.utez.neighborhoodcommitte.service.RequestService;
@@ -21,8 +22,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-
 
 @Controller
 @RequestMapping(value = "/request")
@@ -83,19 +82,25 @@ public class RequestController {
     @PostMapping(value = "/update")
     public String actualizar(@ModelAttribute("request") Request request, Model modelo,
             RedirectAttributes redirectAttributes) {
-        Request obj = requestService.findById(request.getId());
-        obj.setPaymentAmount(request.getPaymentAmount());
-        if (obj != null) {
-            requestService.save(obj);
-            modelo.addAttribute("listRequests", requestService.findAll());
+        if (!BlacklistController.checkBlacklistedWords(request.getDescription())) {
+            Request obj = requestService.findById(request.getId());
+            obj.setPaymentAmount(request.getPaymentAmount());
+            if (obj != null) {
+                requestService.save(obj);
+                modelo.addAttribute("listRequests", requestService.findAll());
+            }
+            return "requests/listRequests";
+        } else {
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
+            return "redirect:/request/list";
         }
-        return "requests/listRequests";
 
     }
 
     @GetMapping(value = "/list")
     public String findAll(Model model, RedirectAttributes redirectAttributes, Pageable pageable) {
-        Page<Request> listRequests = requestService.listarPaginacion(PageRequest.of(pageable.getPageNumber(), 2, Sort.by("startDate").descending()));
+        Page<Request> listRequests = requestService
+                .listarPaginacion(PageRequest.of(pageable.getPageNumber(), 2, Sort.by("startDate").descending()));
         model.addAttribute("listRequests", listRequests);
         return "requests/listRequests";
     }
@@ -122,22 +127,26 @@ public class RequestController {
         String msgOk = "";
         String msgError = "";
 
-        if (request.getId() != null) {
-            msgOk = "Solictud Actualizada correctamente";
-            msgError = "La solicitud NO pudo ser Actualizada correctamente";
-        } else {
-            msgOk = "Solicitud Guardada correctamente";
-            msgError = "La solicitud NO pudo ser Guardada correctamente";
-        }
+        if (!BlacklistController.checkBlacklistedWords(request.getDescription())) {
+            if (request.getId() != null) {
+                msgOk = "Solictud Actualizada correctamente";
+                msgError = "La solicitud NO pudo ser Actualizada correctamente";
+            } else {
+                msgOk = "Solicitud Guardada correctamente";
+                msgError = "La solicitud NO pudo ser Guardada correctamente";
+            }
 
-        boolean res = requestService.save(request);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", msgOk);
-            return "redirect:/requests/list";
+            boolean res = requestService.save(request);
+            if (res) {
+                redirectAttributes.addFlashAttribute("msg_success", msgOk);
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", msgError);
+            }
         } else {
-            redirectAttributes.addFlashAttribute("msg_error", msgError);
-            return "redirect:/requests/amountRequests";
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
         }
+        return "redirect:/request/list";
+
     }
 
     @RequestMapping(value = "/commentary/{id}", method = RequestMethod.GET)
@@ -158,20 +167,24 @@ public class RequestController {
         user.setPassword(null);
         session.setAttribute("user", user);
         commentaryObject.setRequest(requestService.findById(id));
-        Users tmp = usersService.findById(user.getId());
-        tmp.setPassword(usersService.findPasswordById(tmp.getId()));
-        Roles tmpRole = (Roles) tmp.getRoles().toArray()[0];
-        if (tmpRole.getAuthority().equals("ROL_PRESIDENTE")) {
-            commentaryObject.setAutor("Presidente");
+        if (!BlacklistController.checkBlacklistedWords(commentaryObject.getContent())) {
+            Users tmp = usersService.findById(user.getId());
+            tmp.setPassword(usersService.findPasswordById(tmp.getId()));
+            Roles tmpRole = (Roles) tmp.getRoles().toArray()[0];
+            if (tmpRole.getAuthority().equals("ROL_PRESIDENTE")) {
+                commentaryObject.setAutor("Presidente");
+            } else {
+                commentaryObject.setAutor("Enlace");
+            }
+            commentaryObject.setId(null);
+            boolean res = commentaryService.save(commentaryObject);
+            if (res) {
+                redirectAttributes.addFlashAttribute("msg_success", "Comentario publicado");
+            } else {
+                redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al publicar el comentario");
+            }
         } else {
-            commentaryObject.setAutor("Enlace");
-        }
-        commentaryObject.setId(null);
-        boolean res = commentaryService.save(commentaryObject);
-        if (res) {
-            redirectAttributes.addFlashAttribute("msg_success", "Comentario publicado");
-        } else {
-            redirectAttributes.addFlashAttribute("msg_error", "Ocurrió un error al publicar el comentario");
+            redirectAttributes.addFlashAttribute("msg_error", "Ingresó una o más palabras prohibidas.");
         }
         return ("redirect:/request/commentary/" + id);
     }
