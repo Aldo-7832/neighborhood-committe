@@ -1,170 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registrar Municipios</title>
-    <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
-    <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"> -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
 
-    <style>
-      li {
-        text-decoration: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div th:insert="~{fragments/header :: header-admin}"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registrar Municipios</title>
+  <link rel="stylesheet" th:href="@{/css/toast.min.css}" />
+  <!-- <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"> -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
 
-    <div class="container">
-      <div class="card">
-        <div class="card-header">REGISTRAR</div>
-        <div class="card-body">
-          <div
-            class="col d-flex justify-content-between bg-white border-bottom mb-2"
-          >
-            <h5 class="card-title">NUEVO USUARIO</h5>
-          </div>
-          <form th:action="@{/users/signup}" th:object="${users}" method="POST">
-            <div class="modal-body">
-              <input type="hidden" th:field="*{id}"/>
-              <input type="hidden" th:field="*{profilePicture}"/>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Nombre</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{name}" placeholder="Nombre(s)" maxlength="150"/>
-                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-                <div class="form-group col-md-8">
-                    <label>Primer Apellido</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{lastName}" placeholder="Primer Apellido" maxlength="150"/>
-                    <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Segundo apellido</label>
-                    <input class="form-control form-control-lg" type="text" th:field="*{surname}" placeholder="Segundo Apellido" maxlength="150"/>
-                    <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-                <div class="form-group col-md-8">
-                  <label>Telefono</label>
-                  <input class="form-control form-control-lg" type="text" th:field="*{phone}" placeholder="Teléfono" maxlength="20"/>
-                  <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger mb-3 mt-3"></div>
-              </div>
-              </div>
-              <hr>
-              <div class="form-row">
-                <div class="form-group col">
-                    <h4>Tipo de Usuario</h4>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <div class="radio">
-                    <label>
-                      <input type="radio" name="tipoUsuario" value="opcionEnlace" checked>
-                      Enlace
-                    </label>&nbsp;&nbsp;&nbsp;
-                    <label>
-                      <input type="radio" name="tipoUsuario" value="opcionPresidente">
-                      Presidente de Comit�
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <hr>
-              <div class="form-row">
-                <div class="form-group col">
-                    <h4>Credenciales</h4>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label>Correo electronico</label>
-                    <input class="form-control form-control-lg" type="email" th:field="*{email}" placeholder="Correo Electr�nico" maxlength="150"/>
-                    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-                <div class="form-group col-md-8">
-                  <label>Nombre de Usuario</label>
-                  <input class="form-control form-control-lg" type="text" th:field="*{username}" placeholder="Nombre de Usuario" maxlength="150"/>
-                  <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-4">
-                  <label>Contrase�a</label>
-                  <input class="form-control form-control-lg" type="password" th:field="*{password}" placeholder="Contrase�a" maxlength="255"/>
-                  <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-              </div>
-              <hr>
-              <div class="form-row">
-                <div class="form-group col">
-                    <h4>Comité al que Pertenece</h4>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col">
-                  <label>Comité</label>
-                  <select class="form-control form-control-lg" th:field="*{committee.id}">
-                    <option th:each="committee: ${listCommittee}" th:value="${committee.id}" th:text="${committee.suburb.name}"></option>
-                  </select>
-                  <div th:if="${#fields.hasErrors('committee')}" th:errors="*{committee}" class="alert alert-danger mb-3 mt-3"></div>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <div class="row float-right">
-                <div class="col-lg-12 float-right">
-                  <a th:href="@{/users/list}" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Cancelar</span>
-                  </a>
-                  <button class="btn btn-primary" type="submit">
-                    <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Guardar</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
+  <style>
+    li {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div th:insert="~{fragments/header :: header-admin}"></div>
+
+  <div class="container">
+    <div class="card">
+      <div class="card-header">REGISTRAR</div>
+      <div class="card-body">
+        <div class="col d-flex justify-content-between bg-white border-bottom mb-2">
+          <h5 class="card-title">NUEVO USUARIO</h5>
         </div>
+        <form th:action="@{/users/signup}" th:object="${users}" method="POST">
+          <div class="modal-body">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{profilePicture}" />
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Nombre</label>
+                <input id="name" onchange="checkInputs()" class="form-control form-control-lg" type="text" th:field="*{name}"
+                  placeholder="Nombre(s)" maxlength="150" />
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger mb-3 mt-3">
+                </div>
+              </div>
+              <div class="form-group col-md-8">
+                <label>Primer Apellido</label>
+                <input id="lastname" onchange="checkInputs()" class="form-control form-control-lg" type="text" th:field="*{lastName}"
+                  placeholder="Primer Apellido" maxlength="150" />
+                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"
+                  class="alert alert-danger mb-3 mt-3"></div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Segundo apellido</label>
+                <input class="form-control form-control-lg" type="text" th:field="*{surname}"
+                  placeholder="Segundo Apellido" maxlength="150" />
+                <div th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"
+                  class="alert alert-danger mb-3 mt-3"></div>
+              </div>
+              <div class="form-group col-md-8">
+                <label>Telefono</label>
+                <input id="phone" onchange="checkInputs()" class="form-control form-control-lg" type="text" th:field="*{phone}"
+                  placeholder="Teléfono" maxlength="20" />
+                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="alert alert-danger mb-3 mt-3">
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col">
+                <h4>Tipo de Usuario</h4>
+              </div>
+            </div>
+            <div>
+              <div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="tipoUsuario" value="opcionEnlace" checked>
+                    Enlace
+                  </label>&nbsp;&nbsp;&nbsp;
+                  <label>
+                    <input type="radio" name="tipoUsuario" value="opcionPresidente">
+                    Presidente de Comité
+                  </label>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col">
+                <h4>Credenciales</h4>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Correo electronico</label>
+                <input id="mail" onchange="checkInputs()" class="form-control form-control-lg" type="email" th:field="*{email}"
+                  placeholder="Correo Electrónico" maxlength="150" />
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert alert-danger mb-3 mt-3">
+                </div>
+              </div>
+              <div class="form-group col-md-8">
+                <label>Nombre de Usuario</label>
+                <input id="username" onchange="checkInputs()" class="form-control form-control-lg" type="text" th:field="*{username}"
+                  placeholder="Nombre de Usuario" maxlength="150" />
+                <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"
+                  class="alert alert-danger mb-3 mt-3"></div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Contraseña</label>
+                <input id="pass1" onchange="checkInputs()" class="form-control form-control-lg" type="password"
+                  placeholder="Contraseña" maxlength="255" />
+                <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                  class="alert alert-danger mb-3 mt-3"></div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Confirmar Contraseña</label>
+                <input id="pass2" onchange="checkInputs()" class="form-control form-control-lg" type="password"
+                  th:field="*{password}" placeholder="Confirmar Contraseña" maxlength="255" />
+                <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
+                  class="alert alert-danger mb-3 mt-3"></div>
+              </div>
+            </div>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col">
+                <h4>Comité al que Pertenece</h4>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col">
+                <label>Comité</label>
+                <select class="form-control form-control-lg" th:field="*{committee.id}">
+                  <option th:each="committee: ${listCommittee}" th:value="${committee.id}"
+                    th:text="${committee.suburb.name}"></option>
+                </select>
+                <div th:if="${#fields.hasErrors('committee')}" th:errors="*{committee}"
+                  class="alert alert-danger mb-3 mt-3"></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row float-right">
+              <div class="col-lg-12 float-right">
+                <a th:href="@{/users/list}" class="btn btn-secondary" data-bs-dismiss="modal">
+                  <ion-icon name="arrow-back-outline"></ion-icon>&nbsp;<span
+                    class="d-sm-none d-md-none d-lg-inline d-xl-inline"> Cancelar</span>
+                </a>
+                <button id="btnReg" onclick="checkInputs()" class="btn btn-primary" type="submit" disabled>
+                  <ion-icon name="checkmark"></ion-icon>&nbsp;<span class="d-sm-none d-md-none d-lg-inline d-xl-inline">
+                    Guardar</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-    <!-- <script th:src="@{/js/bootstrap.min.js}"></script> -->
-    <!--Ionicons-->
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
-    ></script>
+  </div>
+  <!-- <script th:src="@{/js/bootstrap.min.js}"></script> -->
+  <!--Ionicons-->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
-    <script th:src="@{/js/toast.min.js}"></script>
+  <script th:src="@{/js/toast.min.js}"></script>
 
-    <script th:if="${msg_success != null}">
-      new Toast({
-        message: "[[${msg_success}]]",
-        type: "success",
-      });
-    </script>
-    <script th:if="${msg_error != null}">
-      new Toast({
-        message: "[[${msg_error}]]",
-        type: "danger",
-      });
-    </script>
-  </body>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+  <script th:if="${msg_success != null}">
+    new Toast({
+      message: "[[${msg_success}]]",
+      type: "success",
+    });
+  </script>
+  <script th:if="${msg_error != null}">
+    new Toast({
+      message: "[[${msg_error}]]",
+      type: "danger",
+    });
+  </script>
+  <script>
+    checkInputs = () => {
+      var pass1 = $("#pass1").val();
+      var pass2 = $("#pass2").val();
+      var btn = $("#btnReg");
+      var name = $("#name").val();
+      var lastname = $("#lastname").val();
+      var phone = $("#phone").val();
+      var mail = $("#mail").val();
+      var username = $("#username").val();
+
+      if (name != "" && lastname != "" && phone != "" && mail != "" && pass1 != "" && pass2 != "" && username != "") {
+        if (pass1 !== pass2) {
+          btn.attr('disabled', true);
+          event.preventDefault();
+        } else {
+          btn.attr('disabled', false);
+        }
+      }
+    }
+  </script>
+</body>
+
 </html>

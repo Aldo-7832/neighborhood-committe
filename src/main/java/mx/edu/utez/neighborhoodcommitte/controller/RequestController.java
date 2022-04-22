@@ -154,7 +154,6 @@ public class RequestController {
         Users tmp = usersService.findById(user.getId());
         tmp.setPassword(usersService.findPasswordById(tmp.getId()));
         Roles tmpRole = (Roles) tmp.getRoles().toArray()[0];
-        System.out.println(tmpRole.getAuthority());
         if (tmpRole.getAuthority().equals("ROL_PRESIDENTE")) {
             commentaryObject.setAutor("Presidente");
         } else {
