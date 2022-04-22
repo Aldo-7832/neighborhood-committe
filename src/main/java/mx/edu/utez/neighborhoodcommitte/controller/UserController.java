@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
-import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

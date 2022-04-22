@@ -1,6 +1,5 @@
 package mx.edu.utez.neighborhoodcommitte.repository;
 
-import mx.edu.utez.neighborhoodcommitte.entity.Request;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
